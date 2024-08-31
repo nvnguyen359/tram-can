@@ -1,0 +1,76 @@
+<form [formGroup]="formBank" (ngSubmit)="onSubmit()" (blur)="onSubmitBank()">
+  <div class="flex">
+    <mat-card>
+      <mat-card-content><app-printers></app-printers></mat-card-content>
+    </mat-card>
+    <input type="hidden" name="" formControlName="id">
+    <mat-card formGroupName="banks">
+      <mat-card-content>
+        <fieldset class="flex column">
+          <legend>Thông Tin Ngân Hàng</legend>
+          <app-autocomplete [options]="optionsBanhks" [data]="banks" *ngIf="banks.length>0"
+            (selectTed)="onSelectBank($event)" required [default]="initBank.shortName"></app-autocomplete>
+          <input type="hidden" formControlName="bin">
+          <mat-form-field>
+            <mat-label>Số Tài Khoản</mat-label>
+            <input matInput type="text" minlength="6" required maxlength="19" (blur)="onSubmitBank($event)"
+              formControlName="accountNumber">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Tên Tài Khoản</mat-label>
+            <input matInput type="text" formControlName="accountName" (focus)="onFocus()">
+          </mat-form-field>
+        </fieldset>
+
+      </mat-card-content>
+    </mat-card>
+    <mat-card formGroupName="ghn">
+      <mat-card-content>
+        <fieldset class="flex column">
+          <legend>Thông Tin GHN</legend>
+          <mat-form-field>
+            <mat-label>Token</mat-label>
+            <input matInput formControlName="token">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Client_id</mat-label>
+            <input matInput formControlName="Client_id">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>ShopID</mat-label>
+            <input matInput formControlName="ShopID">
+          </mat-form-field>
+        </fieldset>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content formGroupName="store">
+        <fieldset class="flex column">
+          <legend>Thông Tin Cửa Hàng</legend>
+          <mat-form-field>
+            <mat-label>Tên Cửa Hàng</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phone">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Địa Chỉ</mat-label>
+            <input matInput formControlName="address">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Thông Tin Khác</mat-label>
+            <textarea matInput formControlName="infoPlus"></textarea>
+          </mat-form-field>
+        </fieldset>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+  <div class="fixed bottom">
+    <button mat-fab color="primary" aria-label="Example icon button with a home icon" type="submit">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</form>

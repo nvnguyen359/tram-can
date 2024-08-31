@@ -1,0 +1,72 @@
+{
+  "name": "TRAMCAN",
+  "version": "0.0.1",
+  "description": "Phần Mềm Trạm Cân",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon --exec electron .",
+    "start": "electron .",
+    "deploy": "electron-builder",
+    "build": "electron-builder"
+  },
+  "repository": "https://github.com/nvnguyen359/tram-can",
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
+  },
+  "build": {
+    "appId": "com.nguyen.autoupdater.tramcan",
+    "artifactName": "${name}-${version}.${ext}",
+    "win": {
+      "target": "nsis"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "asar": true,
+    "extraFiles": [
+      {
+        "from": "./.env",
+        "to": "./.env"
+      },
+      {
+        "from": "./img",
+        "to": "./img"
+      }
+    ]
+  },
+  "author": "Nguyen",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^32.0.1",
+    "electron-builder": "^24.13.3",
+    "nodemon": "^3.1.4"
+  },
+  "dependencies": {
+    "@electron-forge/publisher-github": "^7.4.0",
+    "@serialport/list": "^12.0.0",
+    "body-parser": "^1.20.2",
+    "certbot": "^5.0.3",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "country-json": "^2.2.5",
+    "dotenv": "^16.4.5",
+    "electron-pos-printer": "^1.3.6",
+    "electron-print": "^1.0.2",
+    "electron-updater": "^6.3.4",
+    "express": "^4.19.2",
+    "google-auth-library": "^9.14.0",
+    "google-spreadsheet": "^4.1.2",
+    "knex": "^3.1.0",
+    "lodash": "^4.17.21",
+    "node-schedule": "^2.1.1",
+    "node-thermal-printer": "^4.4.1",
+    "pdf-to-printer": "^5.6.0",
+    "serialport": "^12.0.0",
+    "socket.io": "^4.7.5",
+    "sqlite3": "^5.1.6",
+    "uid": "^2.0.2",
+    "update-electron-app": "^3.0.0"
+  }
+}

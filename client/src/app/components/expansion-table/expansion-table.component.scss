@@ -1,0 +1,106 @@
+.example-container {
+  height: 620px;
+  overflow: auto;
+}
+
+thead tr th {
+  width: 50px;
+}
+
+mat-mini-fab {
+  opacity: 0.5;
+}
+
+mat-mini-fab:hover {
+  opacity: 1;
+}
+
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+.table-details td,
+.table-details th {
+  padding: 8px;
+}
+
+.table-details {
+  border-collapse: collapse;
+}
+
+.table-details tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table-details tr:hover {
+  background-color: #ddd;
+}
+
+.table-details thead td {
+  text-align: left;
+  background-color: #303030;
+  color: white;
+}
+
+.chip {
+  width: 100%;
+  background: var(--mat-stepper-header-selected-state-icon-background-color);
+  border-radius: 5px;
+  padding: 4px;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
+.mat-mdc-row .mat-mdc-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-color: currentColor;
+}
