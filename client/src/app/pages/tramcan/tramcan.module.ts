@@ -16,7 +16,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-
+import { InputTextModule } from 'primeng/inputtext';
 @NgModule({
   declarations: [TramcanComponent],
   imports: [
@@ -29,7 +29,7 @@ import { MatInputModule } from '@angular/material/input';
     MatButton,
     MatIconModule,
     ExpansionTableComponent,
-    ReactiveFormsModule,MatIconModule,MatInputModule,MatButtonModule
+    ReactiveFormsModule,MatIconModule,MatInputModule,MatButtonModule,InputTextModule
   ],
   schemas:[NO_ERRORS_SCHEMA]
 })
