@@ -1,12 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FloatLabelModule } from 'primeng/floatlabel';
+import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { WeighStationRoutingModule } from './weigh-station-routing.module';
 import { WeighStationComponent } from './weigh-station.component';
-import { FormsModule } from '@angular/forms';
-
+import { ImportsModule } from 'src/app/imports';
 @NgModule({
   declarations: [WeighStationComponent],
-  imports: [CommonModule, WeighStationRoutingModule,FloatLabelModule,FormsModule ],
+  imports: [
+    WeighStationRoutingModule,
+   ImportsModule
+  ],
+ 
+  providers: [],
+schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class WeighStationModule {}

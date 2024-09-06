@@ -61,6 +61,7 @@ export class AutocompleteComponent {
     placeholder: 'Tìm Sản Phẩm',
     banks: '',
     url: '',
+    showButton:false
   };
   @Output() selectTed = new EventEmitter<string>();
   @Output() nameText = new EventEmitter<string>();

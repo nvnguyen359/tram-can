@@ -1,8 +1,150 @@
-<form action="" class="flex full-width">
-    <fieldset>
-        <legend>Phiếu Cân</legend>
-    </fieldset>
-    <fieldset>
-        <legend>Trọng Lượng Hiện Tại</legend>
-    </fieldset>
-</form>
+<mat-card style="margin-left: 4px;">
+    <mat-card-content>
+        <form action="" class="flex full-width" [formGroup]="form">
+            <fieldset style="max-width: 450px;">
+                <legend>Phiếu Cân</legend>
+                <div class="flex wrap">
+                    <app-autocomplete [options]="optionCarNumber"></app-autocomplete>
+                    <app-autocomplete [options]="optionCustomer"></app-autocomplete>
+                    <app-autocomplete [options]="optionWeighProductName" class="margin-top_-18px"></app-autocomplete>
+                    <app-autocomplete [options]="optionWeighType" class="margin-top_-18px"></app-autocomplete>
+                    <input type="hidden" name="" formControlName="id">
+                    <input type="hidden" name="" formControlName="carNumber">
+                    <input type="hidden" name="" formControlName="customerName">
+                    <input type="hidden" name="" formControlName="productName">
+                    <input type="hidden" name="" formControlName="type">
+                    <input type="hidden" name="" formControlName="isActive">
+                    <input type="hidden" formControlName="weight1">
+                    <input type="hidden" formControlName="weight2">
+                    <input type="hidden" formControlName="userId">
+                </div>
+                <div class="sl-can">
+                    <section class="example-section">
+                        <mat-radio-group formControlName="ieGoods" >
+                            <mat-radio-button *ngFor="let item of radioGroup" [value]="item"
+                                (change)="onChangeRadio($event)">{{item}}</mat-radio-button>
+                        </mat-radio-group>
+                    </section>
+                </div>
+                <mat-accordion>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title color="primary">
+                                Tính Đơn Hàng
+                            </mat-panel-title>
+                            <mat-panel-description class="icon-right">
+                                <mat-icon>keyboard_arrow_down</mat-icon>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="flex row">
+                            <div class="x-price flex row ">
+                                <mat-form-field class="margin-top_-18px position-abs">
+                                    <mat-label>Trừ Bì (Kg)</mat-label>
+                                    <input matInput type="number" formControlName="tareKg" min="0" >
+                                    @if (form.value.tareKg) {
+                                    <button matSuffix mat-icon-button aria-label="Clear" (click)="form.controls['tareKg'].setValue('')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    }
+                                </mat-form-field>
+                                <mat-form-field class="small margin-top_-18px position-abs">
+                                    <mat-label> Trừ Bì (%)</mat-label>
+                                    <mat-select formControlName="tare"
+                                        (selectionChange)="selectionChangeTapChat($event)" 
+                                       >
+                                        @for (x of impurities; track x) {
+                                        <mat-option [value]="x">{{x}}</mat-option>
+                                        }
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="example-form-field margin-top_-18px">
+                                    <mat-label>Đơn Giá</mat-label>
+                                    <input matInput type="number" formControlName="price" min="0" 
+                                        (keyup)=" keypressDonGia($event)">
+                                    @if (form.value.tare) {
+                                    <button matSuffix mat-icon-button aria-label="Clear" (click)="form.controls['tare'].setValue('')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    }
+                                </mat-form-field>
+                                <mat-form-field class="small margin-top_-18px">
+                                    <mat-label>Đơn Vị</mat-label>
+                                    <mat-select (selectionChange)="selectionChangeUnit($event)" required="" 
+                                        formControlName="unit">
+                                        <mat-option value="VND">VND</mat-option>
+                                        <mat-option value="USD">USD</mat-option>
+                                        <mat-option value="RIEL">RIEL</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="flex column full-width margin-top_-18px">
+                                <small style="display: block;">Tỉ giá</small>
+                                <div class="flex row full-width">
+                                    <mat-form-field class="margin-top_-18px" style="max-width: 150px;">
+                                        <mat-label>Đơn Vị</mat-label>
+                                        <mat-select (selectionChange)="selectionChangeUnit($event)" required="" >
+                                            <mat-option value="USD">USD</mat-option>
+                                            <mat-option value="RIEL">RIEL</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="margin-top_-18px" style="max-width: 230px;margin-left:4px">
+                                        <mat-label>Tỉ Giá</mat-label>
+                                        <input matInput type="number" min="0">
+                                        @if (objx.impuritiesKg) {
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="objx.impuritiesKg=0">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                        }
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+            </fieldset>
+            <fieldset>
+                <legend>Thông Số Cân</legend>
+                <div class="flex row group center padding-4">
+                    <div class="number-x">
+                        <p class="lb-x">Bàn Cân</p>
+                        <div class="number-serial bg-black ">25874</div>
+                        <div class="number-serial  c1">888888</div>
+
+                    </div>
+                    <div class="number-x" style="margin-left: 4px;">
+                        <p class="lb-x">Trọng Lượng Hàng</p>
+                        <div class="number-serial bg-black " >25874</div>
+                        <div class="number-serial  c1">888888</div>
+                    </div>
+                </div>
+                <div class="flex row center group ">
+                    <app-input-custom [objx]="obj" (outputValue)="outputValue($event)"></app-input-custom>
+                    <span>11:5:6</span>
+                </div>
+                <div class="flex row center group margin-top_-18px">
+                    <app-input-custom [objx]="obj" (outputValue)="outputValue($event)"></app-input-custom>
+                    <span>11:5:6</span>
+                </div>
+                <section class="sl-can" aria-disabled="true">
+                    <div class="left">
+                        <button mat-flat-button color="primary" style="border: 1px soild red;"
+                            (click)="btCanXeClick()"><span>Chốt Cân</span>
+                            <mat-icon>autorenew</mat-icon></button>
+
+                    </div>
+
+                    <div class="right">
+                        <button [disabled]="disabled" mat-flat-button color="accent"
+                            (click)="savePrint()"><mat-icon>printer</mat-icon><span>Lưu và In</span></button>
+                        <button mat-flat-button [disabled]="disabled" color="primary"
+                            (click)="save()"><mat-icon>save</mat-icon><span>Lưu</span></button>
+                        <button mat-flat-button color="accent">Xóa
+                            &nbsp;<mat-icon>delete</mat-icon></button>
+                    </div>
+                </section>
+            </fieldset>
+        </form>
+    </mat-card-content>
+</mat-card>

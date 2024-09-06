@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MenuComponent } from './menu.component';
+import { InputCustomComponent } from './input-custom.component';
 
-describe('MenuComponent', () => {
-  let component: MenuComponent;
-  let fixture: ComponentFixture<MenuComponent>;
+describe('InputCustomComponent', () => {
+  let component: InputCustomComponent;
+  let fixture: ComponentFixture<InputCustomComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MenuComponent]
+      imports: [InputCustomComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(MenuComponent);
+    fixture = TestBed.createComponent(InputCustomComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

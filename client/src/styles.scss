@@ -1,10 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
+// @import "primeng/resources/themes/lara-light-blue/theme.css";
+// @import "primeng/resources/primeng.css";
 html,
 body {
     height: 100%;
+}
+
+body {
+    margin: 0px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-mdc-form-field-icon-suffix,
+[dir=rtl] .mat-mdc-form-field-icon-prefix {
+    padding: 0 0 0 4px;
+    flex-basis: 48px !important;
 }
 
 body {
@@ -153,8 +164,18 @@ a {
     display: flex;
     align-items: center;
 }
-.flex.column{
+
+.flex.column {
     flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.flex.row {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.flex.wrap {
     flex-wrap: wrap;
 }
 
@@ -164,6 +185,22 @@ a {
 
 .text-left {
     text-align: left;
+}
+
+.position-abs,
+mat-form-field {
+    position: relative;
+    top: 0;
+}
+
+.position-abs  mat-icon-button,
+mat-form-field  mat-icon-button{
+    position: absolute;
+    z-index: 1;
+    top: -22px;
+    right: 0;
+    width: 45px;
+    height: 45px;
 }
 
 .text-right {
@@ -189,17 +226,20 @@ button {
     max-height: 600px;
     overflow: auto;
 }
-html, body { height: 100%; }
-body { margin: 0px; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.ng-star-inserted{
-    background-color: transparent;width: 100%;
-    margin-right: 4px;
+
+.mat-drawer-content div .ng-star-inserted {
+    width: 100%;
 }
-mat-form-field.small {
-    --mat-form-field-container-height: 40px;
-    --mat-form-field-container-vertical-padding: 8px;
-    font-size:medium;
-  }
-  ::ng-deep .mat-mdc-form-field-flex {
-    margin-top: -7px !important;
+
+.margin-top_-18px {
+    margin-top: -18px;
 }
+
+// mat-form-field.small {
+//     --mat-form-field-container-height: 40px;
+//     --mat-form-field-container-vertical-padding: 8px;
+//     font-size:medium;
+//   }
+//   ::ng-deep .mat-mdc-form-field-flex {
+//     margin-top: -7px !important;
+// }

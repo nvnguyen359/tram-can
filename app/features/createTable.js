@@ -46,11 +46,10 @@ const createWeighStation = async (knex) => {
       table.integer("weight1").notNullable();
       table.integer("weight2").notNullable();
       table.integer("cargoVolume");
-      table.double("impurities");
+      table.double("tare");
       table.string("customerId");
       table.string("type", 250);
       table.text("note");
-     
       table.string("userId");
       exoend(table);
     });
@@ -174,18 +173,18 @@ const afterTabletramCan = async (knex) => {
       table1.string(column);
     });
   }
-  column = "impuritiesKg";
+  column = "tareKg";
   exists = await knex.schema.hasColumn("weighStation", column);
   if (!exists) {
     await knex.schema.table("weighStation", async (table1) => {
-      table1.string(column);
+      table1.double(column);
     });
   }
   column = "price";
   exists = await knex.schema.hasColumn("weighStation", column);
   if (!exists) {
     await knex.schema.table("weighStation", async (table1) => {
-      table1.string(column);
+      table1.double(column);
     });
   }
   column = "productName";
@@ -195,20 +194,7 @@ const afterTabletramCan = async (knex) => {
       table1.string(column);
     });
   }
-  column = "time1";
-  exists = await knex.schema.hasColumn("weighStation", column);
-  if (!exists) {
-    await knex.schema.table("weighStation", async (table1) => {
-      table1.string(column);
-    });
-  }
-  column = "time2";
-  exists = await knex.schema.hasColumn("weighStation", column);
-  if (!exists) {
-    await knex.schema.table("weighStation", async (table1) => { 
-      table1.string(column);
-    });
-  }
+
   column = "unit";
   exists = await knex.schema.hasColumn("weighStation", column);
   if (!exists) {
