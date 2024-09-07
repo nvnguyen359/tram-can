@@ -41,17 +41,17 @@ declare var removeAccents: any;
     NgFor,
     MatAutocompleteModule,
     CommonModule,
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    ReactiveFormsModule,
   ],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
 export class AutocompleteComponent {
   filteredOptions?: Observable<any[]>;
-  @Input() data: any[]=[];
+  @Input() data: any[] = [];
   @Input() default: any = null;
   @Input() required: any = false;
   @Input() options: any = {
@@ -61,22 +61,26 @@ export class AutocompleteComponent {
     placeholder: 'Tìm Sản Phẩm',
     banks: '',
     url: '',
-    showButton:false
+    showButton: false,
+    default: '',
   };
-  @Output() selectTed = new EventEmitter<string>();
+  @Output() selectTed = new EventEmitter<any>();
   @Output() nameText = new EventEmitter<string>();
-  @Output() keyUp = new EventEmitter<string>();
+  @Output() keyUp = new EventEmitter<any>();
 
   myControl = new FormControl('');
   valueKeyup = '';
   constructor(private dialog: MatDialog, private services: ApiService) {}
   ngOnInit() {
-  //  console.log(this.options);
+    //  console.log(this.options);
+   // this.options.default = this.default ? this.default : this.options.default;
+   // console.log(this.options)
     this.initOptions();
-  
+
     //console.log(this.filteredOptions)
   }
-  initOptions(){
+
+  initOptions() {
     if (!this.data) {
       this.services.get(this.options.url).then((e: any) => {
         this.data = e.items;
@@ -90,12 +94,15 @@ export class AutocompleteComponent {
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-  //  if(Array.from(this.data).length>0){
-  //   this.initOptions();
-  //  }
+    //  if(Array.from(this.data).length>0){
+    //   this.initOptions();
+    //  }
+    this.options.default = this.default ? this.default : this.options.default;
   }
   private _filter(value: string): any {
-    const dt= Array.from(this.data).filter((x:any)=>x[this.options.name]!='')
+    const dt = Array.from(this.data).filter(
+      (x: any) => x[this.options.name] != ''
+    );
     if (!value) {
       return dt;
     } else {
@@ -114,7 +121,7 @@ export class AutocompleteComponent {
   }
   onKeyup(item: any) {
     this.nameText.emit(item.target.value);
-    this.keyUp.emit(item.target.value);
+    this.keyUp.emit({ key: this.options.name, value: item.target.value });
     this.valueKeyup = item.target.value;
   }
   onNewProduct() {

@@ -91,7 +91,7 @@ export class ExpansionTableComponent {
   @Input() options: any = {
     url: '',
     displayedColumns: [],
-    pageSize: 10,
+    pageSize: 5,
     isShowBt:false
   };
   @Output() eventDelete = new EventEmitter();
@@ -308,7 +308,8 @@ export class ExpansionTableComponent {
       { key: 'intoMney', value: 'Thành Tiền' },
       { key: 'pay', value: 'Thanh Toán' },
       { key: 'createdAt', value: 'Ngày' },
-      { key: 'updatedAt', value: 'Ngày Cập Nhật' },
+      { key: 'updatedAt', value: 'Ngày' },
+      { key: 'customerName', value: 'Khách Hàng' },
       { key: 'price', value: 'Gía Bán' },
       { key: 'importPrice', value: 'Gía Nhập' },
       { key: 'unit', value: 'Đơn Vị' },
@@ -332,8 +333,8 @@ export class ExpansionTableComponent {
       { key: 'valueImport', value: 'Tiền Nhập' },
       { key: 'valueOut', value: 'Doanh Thu' },
       { key: 'profit', value: 'Lợi Nhuận' },
-      { key: 'weight1', value: 'KL Cân Lần 1' },
-      { key: 'weight2', value: 'KL Cân Lần 2' },
+      { key: 'weight1', value: 'Cân Lần 1' },
+      { key: 'weight2', value: 'Cân Lần 2' },
       { key: 'cargoVolume', value: 'KL Hàng' },
       { key: 'impurities', value: 'Tạp Chất(%)' },
       { key: 'carNumber', value: 'Số Xe' },

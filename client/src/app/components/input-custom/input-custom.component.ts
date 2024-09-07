@@ -37,6 +37,7 @@ export class InputCustomComponent {
     this.obj.value = '';
   }
   keyup() {
+    console.log('ok')
     this.outputValue.emit(this.obj);
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,5 +45,6 @@ export class InputCustomComponent {
     //Add '${implements OnChanges}' to the class.
     // console.log(changes)
     this.outputValue.emit(this.obj);
+    console.log(changes)
   }
 }

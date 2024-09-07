@@ -24,7 +24,7 @@ tr.example-detail-row {
 }
 
 tr.example-element-row:not(.example-expanded-row):hover {
-  background: whitesmoke;
+  background: rgb(124, 83, 83);
 }
 
 tr.example-element-row:not(.example-expanded-row):active {
@@ -34,7 +34,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-row td {
   border-bottom-width: 0;
 }
-
+tr:nth-child(even){background-color: #f2f2f2;}
 .example-element-detail {
   overflow: hidden;
   display: flex;

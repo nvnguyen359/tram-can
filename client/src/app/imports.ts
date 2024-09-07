@@ -28,6 +28,7 @@ import { InputCustomComponent } from './components/input-custom/input-custom.com
 import { AutocompleteComponent } from './Components/autocomplete/autocomplete.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
+import { ExpansionTableComponent } from './components/expansion-table/expansion-table.component';
 @NgModule({
   imports: [MatRadioModule,
     MatExpansionModule,
@@ -70,7 +71,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatChipsModule,
     MatInputModule,
     MatTooltipModule,
-    InputCustomComponent,AutocompleteComponent
+    InputCustomComponent,AutocompleteComponent,ExpansionTableComponent
   ],
   exports: [MatRadioModule,
     MatExpansionModule,
@@ -113,7 +114,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatChipsModule,
     MatInputModule,
     MatTooltipModule,
-    InputCustomComponent,AutocompleteComponent
+    InputCustomComponent,AutocompleteComponent,ExpansionTableComponent
   ],
   providers:[]
 })

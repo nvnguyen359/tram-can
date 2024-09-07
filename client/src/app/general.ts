@@ -113,7 +113,7 @@ export function fields() {
     {
       field: 'updatedAt',
       type: 'date',
-      text: 'Ngày Cập Nhật',
+      text: 'Ngày',
     },
     {
       field: 'price',
@@ -175,7 +175,7 @@ export function fields() {
     {
       field: 'weight1',
       type: 'number',
-      text: 'KL Cân Lần 1',
+      text: 'KL Lần 1',
     },
     {
       field: groupItem.IsumImport,

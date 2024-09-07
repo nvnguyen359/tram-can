@@ -223,18 +223,22 @@ button {
 
 .max-height {
     min-height: 200px;
-    max-height: 600px;
+    max-height: 400px;
     overflow: auto;
 }
-
-.mat-drawer-content div .ng-star-inserted {
-    width: 100%;
+.mat-mdc-table{
+    background-color: transparent!important;
 }
+// .mat-drawer-content div .ng-star-inserted {
+//     width: 100%;
+// }
 
 .margin-top_-18px {
     margin-top: -18px;
 }
-
+.margin-top_-16px {
+    margin-top: -16px;
+}
 // mat-form-field.small {
 //     --mat-form-field-container-height: 40px;
 //     --mat-form-field-container-vertical-padding: 8px;

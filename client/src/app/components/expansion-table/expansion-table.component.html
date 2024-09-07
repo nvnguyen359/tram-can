@@ -1,4 +1,4 @@
-<div class="mat-elevation-z8" *ngIf="dataSource">
+<div class="" *ngIf="dataSource">
     <div class="max-height">
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
             <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -114,9 +114,11 @@
             (click)="onbulkDelete()">Xóa
             &nbsp;<mat-icon>delete</mat-icon></button>
         </div>
-        <mat-paginator [length]="resultsLength" [pageSize]="10" (page)="getServerData($event)"
-            [pageSizeOptions]="[pageSize, 25, 100,1000,5000]" showFirstLastButtons="true">
-        </mat-paginator>
+       <div >
+        <mat-paginator [length]="resultsLength" [pageSize]="pageSize" (page)="getServerData($event)"
+        [pageSizeOptions]="[pageSize,10, 25, 100,1000,5000]" showFirstLastButtons="true">
+    </mat-paginator>
+       </div>
     </div>
     <!-- <div class="fixed bottom">
         <button mat-fab color="warn" aria-label="Example icon button with a home icon" (click)="onCreate()">

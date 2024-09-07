@@ -6,30 +6,35 @@ z-index: 1000000;">
     <span>{{pageName||'Trang Chủ'}}</span>
     <button class="mat-icon-button" mat-icon-button (click)="onRefesh()">
         <mat-icon>update</mat-icon>
-      </button>
+    </button>
 
-    <span class="example-spacer"></span> 
-    <div appearance="outline" class="search"  #tooltip="matTooltip" [matTooltipShowDelay]="3000" matTooltip="Nhấn Enter hoặc Click button search để tìm kiếm">
+    <span class="example-spacer"></span>
+    <div appearance="outline" class="search" #tooltip="matTooltip" [matTooltipShowDelay]="3000"
+        matTooltip="Nhấn Enter hoặc Click button search để tìm kiếm">
         <mat-icon class="left" (click)=" onSearch()" id="icon-search" matSuffix>search</mat-icon>
-        <input autocomplete="off" class="input-search" id="id-input-search" (keyup)="onSearch()" matInput [(ngModel)]="search" placeholder="Nhấn Enter hoặc Click button search để tìm kiếm"  >
-        <mat-icon class="right {{onShowSearch()}}" matSuffix  (click)="onClose()">close</mat-icon>
+        <input autocomplete="off" class="input-search" id="id-input-search" (keyup)="onSearch()" matInput
+            [(ngModel)]="search" placeholder="Nhấn Enter hoặc Click button search để tìm kiếm">
+        <mat-icon class="right {{onShowSearch()}}" matSuffix (click)="onClose()">close</mat-icon>
     </div>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" (click)="onMinimize()">
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"
+        (click)="onMinimize()">
         <mat-icon>minimize</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"  (click)="onMaximize()">
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"
+        (click)="onMaximize()">
         <mat-icon>crop_din</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="onCloseWindow()">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+        (click)="onCloseWindow()">
         <mat-icon>close</mat-icon>
     </button>
 </mat-toolbar>
-<mat-drawer-container class="example-container" autosize style="width: 100%;height:100%">
+<mat-drawer-container class="example-container" style="height:100%">
     <mat-drawer #drawer class="example-sidenav margin-top64" mode="side" opened>
         <app-menu-left></app-menu-left>
     </mat-drawer>
 
-    <div class="example-sidenav-content margin-top64" style="margin-right: 16px;" >
+    <div class="example-sidenav-content margin-top64 " style="margin-right: 16px; ">
         <router-outlet></router-outlet>
         <app-spinner> </app-spinner>
     </div>
