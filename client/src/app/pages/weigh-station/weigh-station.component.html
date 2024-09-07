@@ -39,7 +39,7 @@
             <mat-accordion>
                 <mat-expansion-panel hideToggle (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
+                        <mat-panel-title style="color: blue;">
                             Tính Đơn Hàng
                         </mat-panel-title>
                         <mat-panel-description class="icon-right">
@@ -89,7 +89,7 @@
                             </mat-form-field>
                         </div>
                         <div class="flex column full-width margin-top_-18px">
-                            <small style="display: block;">Tỉ giá</small>
+                            <small style="display: block;">Tỉ giá với VND</small>
                             <div class="flex row full-width">
                                 <mat-form-field class="margin-top_-18px" style="max-width: 150px;">
                                     <mat-label>Đơn Vị</mat-label>
@@ -99,7 +99,7 @@
                                     </mat-select>
                                 </mat-form-field>
                                 <mat-form-field class="margin-top_-18px" style="max-width: 230px;margin-left:4px">
-                                    <mat-label>Tỉ Giá</mat-label>
+                                    <mat-label>Tỉ giá với VND</mat-label>
                                     <input matInput type="number" min="0">
                                     @if (objx.tareKg) {
                                     <button matSuffix mat-icon-button aria-label="Clear" (click)="objx.tareKg=0">
@@ -148,8 +148,8 @@
                         <button mat-flat-button color="accent" (click)="savePrint()" [disabled]="!form.valid"
                             type="submit"><mat-icon>printer</mat-icon><span>Lưu và In</span></button>
                         <button mat-flat-button color="primary" (click)="save()" [disabled]="!form.valid"
-                            type="submit"><mat-icon>save</mat-icon><span>Lưu</span></button>
-                        <button mat-flat-button color="accent">Xóa
+                            type="button"><mat-icon>save</mat-icon><span>Lưu</span></button>
+                        <button mat-flat-button color="accent" type="button"[disabled]="!form.valid" (click)="onDelete()">Xóa
                             &nbsp;<mat-icon>delete</mat-icon></button>
                     </div>
                 </section>

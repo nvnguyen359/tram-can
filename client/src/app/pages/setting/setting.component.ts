@@ -11,7 +11,7 @@ import { ApiService } from "src/app/services/api.service";
   styleUrls: ["./setting.component.scss"],
 })
 export class SettingComponent {
-  url = BaseApiUrl.Setting;
+  url = BaseApiUrl.CaiDat;
   banks: any[] = [];
   formBank: any;
   optionsBanhks = {

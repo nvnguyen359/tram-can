@@ -43,6 +43,7 @@ export class ApiService {
     return error.error;
   }
   baseServer = '';
+  hash = location.hash.replace('#/', '')
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
@@ -153,7 +154,7 @@ export class ApiService {
     });
   }
   async update1(data: any, url: string = '') {
-    if (url == '') url = location.hash.replace('#/', '');
+    if (url == '') url = this.hash;
     const pathUrl = `${this.baseServer}/${url}`;
     return new Promise((res, rej) => {
       this.http
@@ -168,7 +169,7 @@ export class ApiService {
     });
   }
   async create1(data: any, url: string = '') {
-    if (url == '') url = location.hash.replace('#/', '');
+    if (url == '') url = this.hash;
     let req = !Array.isArray(data) ? [data] : data;
     req = Array.from(req).map((x: any) => {
       if (!x.id || x.id == '') x['id'] = null;
@@ -207,6 +208,43 @@ export class ApiService {
     });
   }
   async destroy(url: string, id: any, showDialog = true) {
+    const pathUrl = `${this.baseServer}/${url}/${id}`;
+    if (showDialog) {
+      const dialogRef = this.dialog.open(DialogConfirmComponent, {
+        data: { header: 'Bạn chắc chắn muốn xóa!' },
+      });
+      return new Promise((res, rej) => {
+        dialogRef.afterClosed().subscribe((result: any) => {
+          if (result == true) {
+            this.http
+              .delete(pathUrl, this.httpOptions)
+              .pipe(
+                retry(3), // retry a failed request up to 3 times
+                catchError(this.handleError)
+              )
+              .subscribe((e) => {
+                res(e);
+              });
+          }
+          this.dataService.sendMessage({ resultDelete: result });
+        });
+      });
+    } else {
+      return new Promise((res, rej) => {
+        this.http
+          .delete(pathUrl, this.httpOptions)
+          .pipe(
+            retry(3), // retry a failed request up to 3 times
+            catchError(this.handleError)
+          )
+          .subscribe((e) => {
+            res(e);
+          });
+      });
+    }
+  }
+  async destroy1(id: any, url: string = '', showDialog = true) {
+    if (url == '') url = this.hash;
     const pathUrl = `${this.baseServer}/${url}/${id}`;
     if (showDialog) {
       const dialogRef = this.dialog.open(DialogConfirmComponent, {

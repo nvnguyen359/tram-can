@@ -186,12 +186,16 @@ export class WeighStationComponent {
   onChangeRadio(event: any) {}
   savePrint() {}
   save(isActive = true) {}
+  onDelete(){
+    console.log(   this.objx )
+    this.services.destroy1(this.objx.id);
+  }
   btCanXeClick() {
     if (this.form.controls['id'].value == 0) {
       this.obj.value = this.weight;
       this.form.controls['weight1'].setValue(this.weight);
     }
-    if (this.objx.weight1 == 0&&this.objx.weight2 == 0 && this.form.controls['id'].value != 0) {
+    if (this.objx.weight1 > 0&&this.objx.weight2 == 0 && this.form.controls['id'].value != 0) {
       this.obj1.value = this.weight;
       this.form.controls['weight2'].setValue(this.weight);
     }
