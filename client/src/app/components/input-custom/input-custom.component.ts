@@ -37,8 +37,10 @@ export class InputCustomComponent {
     this.obj.value = '';
   }
   keyup() {
-    console.log('ok')
     this.outputValue.emit(this.obj);
+  }
+  focus(){
+    
   }
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.

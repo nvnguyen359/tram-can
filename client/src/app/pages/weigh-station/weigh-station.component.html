@@ -50,7 +50,7 @@
                         <div class="x-price flex row ">
                             <mat-form-field class="small margin-top_-18px position-abs">
                                 <mat-label> Trừ Bì (%)</mat-label>
-                                <mat-select formControlName="tare" (selectionChange)="selectionChangeTapChat($event)">
+                                <mat-select formControlName="tare" [(ngModel)]="defaultY.tage" (selectionChange)="selectionChangeTapChat($event)">
                                     @for (x of impurities; track x) {
                                     <mat-option [value]="x">{{x}}</mat-option>
                                     }
@@ -58,7 +58,7 @@
                             </mat-form-field>
                             <mat-form-field class="margin-top_-18px position-abs">
                                 <mat-label>Trừ Bì (Kg)</mat-label>
-                                <input matInput type="number" formControlName="tareKg" min="0">
+                                <input matInput type="number" [(ngModel)]="defaultY.tageKg" (keyup)="keyUptageKg($event)"  formControlName="tareKg" min="0">
                                 @if (form.value.tareKg) {
                                 <button matSuffix mat-icon-button aria-label="Clear"
                                     (click)="form.controls['tareKg'].setValue('')">
@@ -69,7 +69,7 @@
 
                             <mat-form-field class="example-form-field margin-top_-18px">
                                 <mat-label>Đơn Giá</mat-label>
-                                <input matInput type="number" formControlName="price" min="0"
+                                <input matInput type="number" [(ngModel)]="defaultY.price"  formControlName="price" min="0"
                                     (keyup)=" keypressDonGia($event)">
                                 @if (form.value.tare) {
                                 <button matSuffix mat-icon-button aria-label="Clear"
@@ -80,8 +80,8 @@
                             </mat-form-field>
                             <mat-form-field class="small margin-top_-18px">
                                 <mat-label>Đơn Vị</mat-label>
-                                <mat-select (selectionChange)="selectionChangeUnit($event)" required=""
-                                    formControlName="unit">
+                                <mat-select (selectionChange)="selectionChangeUnit($event)" 
+                                    formControlName="unit" [(ngModel)]="defaultY.unit" [ngModelOptions]="{standalone: true}">
                                     <mat-option value="VND">VND</mat-option>
                                     <mat-option value="USD">USD</mat-option>
                                     <mat-option value="RIEL">RIEL</mat-option>
@@ -93,7 +93,7 @@
                             <div class="flex row full-width">
                                 <mat-form-field class="margin-top_-18px" style="max-width: 150px;">
                                     <mat-label>Đơn Vị</mat-label>
-                                    <mat-select (selectionChange)="selectionChangeUnit($event)" required="">
+                                    <mat-select (selectionChange)="selectionChangeUnitTi($event)" [(ngModel)]="defaultY.unitTi" [ngModelOptions]="{standalone: true}" >
                                         <mat-option value="USD">USD</mat-option>
                                         <mat-option value="RIEL">RIEL</mat-option>
                                     </mat-select>
@@ -146,9 +146,9 @@
 
                     <div class="right">
                         <button mat-flat-button color="accent" (click)="savePrint()" [disabled]="!form.valid"
-                            type="submit"><mat-icon>printer</mat-icon><span>Lưu và In</span></button>
-                        <button mat-flat-button color="primary" (click)="save()" [disabled]="!form.valid"
-                            type="button"><mat-icon>save</mat-icon><span>Lưu</span></button>
+                            type="button"><mat-icon>printer</mat-icon><span>Lưu và In</span></button>
+                        <button mat-flat-button color="primary"  [disabled]="!form.valid"
+                            type="submit"><mat-icon>save</mat-icon><span>Lưu</span></button>
                         <button mat-flat-button color="accent" type="button"[disabled]="!form.valid" (click)="onDelete()">Xóa
                             &nbsp;<mat-icon>delete</mat-icon></button>
                     </div>

@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { environment } from './../environment';
 import { catchError, retry } from 'rxjs';
-import { BaseApiUrl } from '../general';
+import { BaseApiUrl, Status } from '../general';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../Components/dialog-confirm/dialog-confirm.component';
 import { DataService } from './data.service';
@@ -149,6 +149,7 @@ export class ApiService {
           catchError(this.handleError)
         )
         .subscribe((data) => {
+          this.dataService.sendMessage({ status: Status.Refesh });
           return res(data);
         });
     });
@@ -164,6 +165,7 @@ export class ApiService {
           catchError(this.handleError)
         )
         .subscribe((data) => {
+          this.dataService.sendMessage({ status: Status.Refesh });
           return res(data);
         });
     });
@@ -184,6 +186,7 @@ export class ApiService {
           catchError(this.handleError)
         )
         .subscribe((e) => {
+          this.dataService.sendMessage({ status: Status.Refesh });
           res(e);
         });
     });
@@ -203,6 +206,7 @@ export class ApiService {
           catchError(this.handleError)
         )
         .subscribe((e) => {
+          this.dataService.sendMessage({ status: Status.Refesh });
           res(e);
         });
     });
@@ -226,7 +230,7 @@ export class ApiService {
                 res(e);
               });
           }
-          this.dataService.sendMessage({ resultDelete: result });
+         // this.dataService.sendMessage({ resultDelete: result });
         });
       });
     } else {
@@ -263,7 +267,8 @@ export class ApiService {
                 res(e);
               });
           }
-          this.dataService.sendMessage({ resultDelete: result });
+        //  this.dataService.sendMessage({ resultDelete: result });
+          this.dataService.sendMessage({ status: Status.Refesh });
         });
       });
     } else {
@@ -275,6 +280,7 @@ export class ApiService {
             catchError(this.handleError)
           )
           .subscribe((e) => {
+            this.dataService.sendMessage({ status: Status.Refesh });
             res(e);
           });
       });
@@ -300,7 +306,7 @@ export class ApiService {
                 res(e);
               });
           }
-          this.dataService.sendMessage({ resultDelete: result });
+         // this.dataService.sendMessage({ resultDelete: result });
         });
       });
     } else {
