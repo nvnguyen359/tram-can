@@ -118,7 +118,7 @@ const exoend = (table) => {
 };
 const setting = async (knex) => {
   try {
-    const tbl = "setting";
+    const tbl = "settings";
     const hasTable = await knex.schema.hasTable(tbl);
     if (hasTable) {
       //console.log(tbl, "already exist!");

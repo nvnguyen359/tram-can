@@ -12,7 +12,7 @@ import {
   FormsModule,
   Validators,
   FormGroup,
-} from "@angular/forms";
+} from '@angular/forms';
 @Component({
   selector: 'app-tramcan',
   templateUrl: './tramcan.component.html',
@@ -49,7 +49,7 @@ export class TramcanComponent {
   };
   connectImg = 'off';
   apiUrl = BaseApiUrl.TramCan;
-  form: any=null;
+  form: any = null;
   colorNum: string = 'blue';
   optionsTable: any = {
     url: 'weighStation',
@@ -80,7 +80,7 @@ export class TramcanComponent {
   ) {}
   async ngOnInit(): Promise<void> {
     // console.log(this.apiUrl);
-this.initForm();
+    this.initForm();
     await this.getComs();
     const serial = localStorage.getItem('connect');
     console.log('serial', serial);
@@ -163,7 +163,7 @@ this.initForm();
   save(isActive = true) {
     if (!isActive) this.obj.isActive = isActive;
     this.services.create(this.apiUrl, this.obj).then((e: any) => {
-      console.log(e)
+      console.log(e);
       this.dataService.sendMessage({ status: Status.Refesh });
     });
   }
@@ -190,8 +190,8 @@ this.initForm();
     delete event?.no;
     this.dataService.sendMessage({ status: Status.Upsert, data: event });
     this.disabled = false;
-    this.obj.weight1= event.weight1;
-    this.obj.weight2= event.weight2;
-this.obj=event;
+    this.obj.weight1 = event.weight1;
+    this.obj.weight2 = event.weight2;
+    this.obj = event;
   }
 }

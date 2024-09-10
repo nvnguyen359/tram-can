@@ -1,4 +1,4 @@
-<div class="" *ngIf="dataSource">
+<div class="xx1" *ngIf="dataSource">
     <div class="max-height">
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
             <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -105,7 +105,7 @@
         </table>
 
     </div>
-    <div class="flex center" style="justify-content: flex-end;margin-right:20px" >
+    <div class="flex center" style="justify-content: flex-end;" >
         <div *ngIf="options.isShowBt">
             <button *ngIf="url!='inventory'" class="{{ngDisabled()}}" mat-flat-button color="primary" (click)="onUpdates()"
             style="margin-right: 8px;">Cập Nhật
@@ -115,7 +115,7 @@
             &nbsp;<mat-icon>delete</mat-icon></button>
         </div>
        <div >
-        <mat-paginator [length]="resultsLength" [pageSize]="pageSize" (page)="getServerData($event)"
+        <mat-paginator [length]="resultsLength" [pageSize]="pageSize" (page)="getServerData($event)" style="width: 100%;"
         [pageSizeOptions]="[pageSize,10, 25, 100,1000,5000]" showFirstLastButtons="true">
     </mat-paginator>
        </div>

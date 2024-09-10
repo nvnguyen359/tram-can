@@ -1,6 +1,6 @@
 {
   "name": "TRAMCAN",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Phần Mềm Trạm Cân",
   "main": "main.js",
   "scripts": {

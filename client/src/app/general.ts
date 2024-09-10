@@ -34,8 +34,9 @@ export enum BaseApiUrl {
   TramCan = 'weighStation',
   KhachHang = 'khachhang',
   CongTy = 'congty',
-  User='user',
-  BaoCao='baocao'
+  User = 'user',
+  BaoCao = 'baocao',Printers='printers'
+
 }
 export enum fieldData {
   importPrice = 'importPrice',
@@ -68,7 +69,7 @@ export function links() {
       text: 'Nhân Viên',
       link: `/${BaseApiUrl.User}`,
       icon: 'account_box',
-    }
+    },
   ];
 }
 const pageSizeOptions: any[] = [9, 10, 25, 100, 1000, 5000];
@@ -276,11 +277,11 @@ export function getLocalStorage(key: any = 'print') {
   const local = JSON.parse(`${localStorage.getItem(key)}`);
   return local;
 }
-export function setLocalStorage(key: any = 'print',value:any){
-  localStorage.setItem(key,JSON.stringify(value));
+export function setLocalStorage(key: any = 'print', value: any) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
-export function setItem(key: any = 'print',value:any){
-  localStorage.setItem(key,JSON.stringify(value));
+export function setItem(key: any = 'print', value: any) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
 export function getItem(key: any = 'print') {
   const local = JSON.parse(`${localStorage.getItem(key)}`);

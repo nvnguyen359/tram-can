@@ -150,14 +150,18 @@ export class WeighStationComponent {
     private fb: FormBuilder
   ) {}
   async ngOnInit(): Promise<void> {
+   
     if (getItem(this.keyPrice)) this.defaultY.price = getItem(this.keyPrice);
     if (getItem(this.keyTage)) this.defaultY.tage = getItem(this.keyTage);
     if (getItem(this.keyTageKg)) this.defaultY.tageKg = getItem(this.keyTageKg);
-    if (getItem(this.keyUnitCurrent)) this.defaultY.unit = getItem(this.keyUnitCurrent);
-    if (getItem(this.keyUnitCurrentTi)) this.defaultY.unitTi = getItem(this.keyUnitCurrentTi);
+    if (getItem(this.keyUnitCurrent))
+      this.defaultY.unit = getItem(this.keyUnitCurrent);
+    if (getItem(this.keyUnitCurrentTi))
+      this.defaultY.unitTi = getItem(this.keyUnitCurrentTi);
     this.objReset = this.objx;
     this.initForm();
     await this.getWeighStation();
+    if (this.socket.disconnect()) this.socket.connect();
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.createImpurities();
@@ -166,8 +170,6 @@ export class WeighStationComponent {
   async ngAfterViewInit() {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-  
-    
   }
   initForm() {
     this.form = this.fb.group({
@@ -227,11 +229,10 @@ export class WeighStationComponent {
     setItem(this.keyTage, event.value);
   }
   keypressDonGia(event: any) {
-    setItem(this.keyPrice,event.target.value)
+    setItem(this.keyPrice, event.target.value);
   }
-  keyUptageKg(event:any){
-
-    setItem(this.keyTageKg,event.target.value)
+  keyUptageKg(event: any) {
+    setItem(this.keyTageKg, event.target.value);
   }
   selectionChangeUnit(event: any) {
     setItem(this.keyUnitCurrent, event.value);

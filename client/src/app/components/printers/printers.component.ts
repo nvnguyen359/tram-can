@@ -17,25 +17,14 @@ import { BaseApiUrl } from "src/app/general";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatCardModule } from "@angular/material/card";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { ImportsModule } from "src/app/imports";
 @Component({
   selector: "app-printers",
   templateUrl: "./printers.component.html",
   styleUrls: ["./printers.component.scss"],
   standalone: true,
   imports: [
-    MatInputModule,
-    MatFormFieldModule,
-    MatIconModule,
-    FormsModule,
-    AutocompleteComponent,
-    MatButtonModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    CommonModule,
-    ReactiveFormsModule,
-    MatSlideToggleModule,
-    MatCardModule,
-    MatCheckboxModule,
+    ImportsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
@@ -73,34 +62,34 @@ export class PrintersComponent {
   pageDefault: any = {};
   constructor(private service: ApiService) {}
   ngOnInit() {
-    // this.service.get(BaseApiUrl.Printers).then((data: any) => {
-    //   this.array = data.printers as any[];
-    //   let check = JSON.parse(`${localStorage.getItem(this.key)}`);
-    //   const printerDefault = data.default;
-    //   if (!check) {
-    //     this.printDefault = data.printers.find(
-    //       (x: any) => x.name == printerDefault.name
-    //     );
-    //     this.pageDefault = this.pageSizes[1];
-    //     this.selected.printer = this.printDefault;
-    //     this.selected.page = this.pageSizes[1];
-    //     this.selected.isThermal = this.isThermal;
-    //     this.selected.isPreview = this.isPreview;
-    //     this.selected.isPay = this.isPay;
-    //     localStorage.setItem(this.key, JSON.stringify(this.selected));
-    //   } else {
-    //     this.printDefault = this.array.find(
-    //       (x: any) => x.name == check?.printer.name
-    //     );
-    //     this.pageDefault = this.pageSizes.find(
-    //       (x: any) => x.key == check?.page.key
-    //     );
-    //     this.isThermal = check.isThermal;
-    //     this.isPreview = check.isPreview;
-    //     this.isPay = check.isPay;
-    //   }
-    //   this.doiText();
-    // });
+    this.service.get(BaseApiUrl.Printers).then((data: any) => {
+      this.array = data.printers as any[];
+      let check = JSON.parse(`${localStorage.getItem(this.key)}`);
+      const printerDefault = data.default;
+      if (!check) {
+        this.printDefault = data.printers.find(
+          (x: any) => x.name == printerDefault.name
+        );
+        this.pageDefault = this.pageSizes[1];
+        this.selected.printer = this.printDefault;
+        this.selected.page = this.pageSizes[1];
+        this.selected.isThermal = this.isThermal;
+        this.selected.isPreview = this.isPreview;
+        this.selected.isPay = this.isPay;
+        localStorage.setItem(this.key, JSON.stringify(this.selected));
+      } else {
+        this.printDefault = this.array.find(
+          (x: any) => x.name == check?.printer.name
+        );
+        this.pageDefault = this.pageSizes.find(
+          (x: any) => x.key == check?.page.key
+        );
+        this.isThermal = check.isThermal;
+        this.isPreview = check.isPreview;
+        this.isPay = check.isPay;
+      }
+      this.doiText();
+    });
   }
   onSelected(event: any = null, type: any) {
     if (!event) return;

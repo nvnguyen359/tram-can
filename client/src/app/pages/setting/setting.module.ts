@@ -12,6 +12,7 @@ import { AutocompleteComponent } from 'src/app/Components/autocomplete/autocompl
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { SerialportComponent } from 'src/app/components/serialport/serialport.component';
 
 
 @NgModule({
@@ -25,7 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
     PrintersComponent,
     MatFormFieldModule, MatInputModule, MatSelectModule,AutocompleteComponent,
     NgFor,
-    FormsModule,ReactiveFormsModule,MatIconModule,MatButtonModule
+    FormsModule,ReactiveFormsModule,MatIconModule,SerialportComponent
   ]
 })
 export class SettingModule { }

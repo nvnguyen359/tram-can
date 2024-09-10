@@ -43,7 +43,7 @@ export class ApiService {
     return error.error;
   }
   baseServer = '';
-  hash = location.hash.replace('#/', '')
+  hash = location.hash.replace('#/', '');
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
@@ -124,7 +124,52 @@ export class ApiService {
         });
     });
   }
+  async findAll(params?: any, name = '', url: string = ''): Promise<any> {
+    if (url == '') url = this.hash;
+    let pas = '';
+    if (params) {
+      const entries = Object.entries(params);
+      entries.forEach((x: any) => {
+        pas += `${x[0]}=${x[1]}&`;
+      });
+    }
+
+    const pathUrl = `${this.baseServer}/${url}?${pas}`;
+    return new Promise((res, rej) => {
+      this.http
+        .get(pathUrl, this.httpOptions)
+        .pipe(
+          retry(3), // retry a failed request up to 3 times
+          catchError(this.handleError)
+        )
+        .subscribe((data: any) => {
+          if (Array.isArray(data)) {
+            // console.log(data)
+            //let dt = !BaseApiUrl.Orders ? Array.from(data) : Array.from(data);
+            return res(data);
+          } else {
+            res(data);
+          }
+        });
+    });
+  }
   async getId(url: string, id = '') {
+    if (url == '') url = this.hash;
+    const pathUrl = `${this.baseServer}/${url}/${id}`;
+
+    return new Promise((res, rej) => {
+      this.http
+        .get(pathUrl, this.httpOptions)
+        .pipe(
+          retry(3), // retry a failed request up to 3 times
+          catchError(this.handleError)
+        )
+        .subscribe((data) => {
+          return res(data);
+        });
+    });
+  }
+  async findId(id = '', url: string = '') {
     const pathUrl = `${this.baseServer}/${url}/${id}`;
 
     return new Promise((res, rej) => {
@@ -230,7 +275,7 @@ export class ApiService {
                 res(e);
               });
           }
-         // this.dataService.sendMessage({ resultDelete: result });
+          // this.dataService.sendMessage({ resultDelete: result });
         });
       });
     } else {
@@ -267,7 +312,7 @@ export class ApiService {
                 res(e);
               });
           }
-        //  this.dataService.sendMessage({ resultDelete: result });
+          //  this.dataService.sendMessage({ resultDelete: result });
           this.dataService.sendMessage({ status: Status.Refesh });
         });
       });
@@ -306,7 +351,7 @@ export class ApiService {
                 res(e);
               });
           }
-         // this.dataService.sendMessage({ resultDelete: result });
+          // this.dataService.sendMessage({ resultDelete: result });
         });
       });
     } else {

@@ -29,8 +29,9 @@ import { AutocompleteComponent } from './Components/autocomplete/autocomplete.co
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
 import { ExpansionTableComponent } from './components/expansion-table/expansion-table.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 @NgModule({
-  imports: [MatRadioModule,
+  imports: [MatRadioModule,MatProgressBarModule,
     MatExpansionModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -73,7 +74,7 @@ import { ExpansionTableComponent } from './components/expansion-table/expansion-
     MatTooltipModule,
     InputCustomComponent,AutocompleteComponent,ExpansionTableComponent
   ],
-  exports: [MatRadioModule,
+  exports: [MatRadioModule,MatProgressBarModule,
     MatExpansionModule,
     MatDatepickerModule,
     MatNativeDateModule,

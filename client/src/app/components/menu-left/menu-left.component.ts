@@ -16,11 +16,11 @@ export class MenuLeftComponent {
   }
   getApi(){
     this.service.eventWindow("ver").then((e: any) => {
-      // this.ver = `${e.data}`.split(":")[1];
-      // this.info = e.data;
-      // localStorage.setItem('ver',this.ver);
-      // const mes = document.getElementById("message");
-      // if (mes) mes.innerHTML = this.info;
+      this.ver = `${e.data}`.split(":")[1];
+      this.info = e.data;
+      localStorage.setItem('ver',this.ver);
+      const mes = document.getElementById("message");
+      if (mes) mes.innerHTML = this.info;
     });
   }
   ngOnInit() {
