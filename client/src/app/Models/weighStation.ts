@@ -18,5 +18,6 @@ export interface WeighStation {
     price: number
     productName: string
     unit: string
+    exchangeRate:any
   }
   

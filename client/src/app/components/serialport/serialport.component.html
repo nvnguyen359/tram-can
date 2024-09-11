@@ -2,20 +2,18 @@
     <mat-form-field >
         <mat-label>Chọn Cổng</mat-label>
         <mat-select [(ngModel)]="ngModel.modelPort" (selectionChange)="selectionChange()">
-            @for (e of data; track e) {
-            <mat-option [value]="e.path">
+            <mat-option [value]="e['path']" *ngFor="let e of data;">
                 <div class="option">
-                    <span>{{e.path}}</span> <small style="margin-left: 4px;">{{e.friendlyName}}</small>
+                    <span>{{e['path']}}</span> <small style="margin-left: 4px;">{{e['friendlyName']}}</small>
                 </div>
             </mat-option>
-            }
         </mat-select>
     </mat-form-field>
     <mat-form-field>
         <mat-label>Chọn tốc độ truyền</mat-label>
         <mat-select [(ngModel)]="ngModel.modelBaud" (selectionChange)="selectionChange()" >
             @for (e of baudRates; track e) {
-            <mat-option [value]="e">
+            <mat-option [value]="e" >
                 <div class="option">
                     <span>{{e}}</span>
                 </div>

@@ -1,8 +1,11 @@
 const { posPrintThermal, setThermal } = require("../shares/posPrinter");
+
 require("dotenv").config();
+const fs = require("fs");
+const path = require("path");
 const lib = require("../shares/lib");
 
-const {SerialPort} = require("serialport");
+const { SerialPort } = require("serialport");
 const {
   app,
   BrowserWindow,
@@ -94,24 +97,48 @@ const getEventWindow = (app) => {
 const getComs = (app) => {
   app.get(`/api/ports`, async (req, res, next) => {
     res.send(await SerialPort.list());
-    next()
+    next();
   });
 };
 const configSerial = (app) => {
   app.post(`/api/ports`, async (req, res, next) => {
     const body = req.body;
-    const serialPort = new SerialPort( {path:body.port,
+    const serialPort = new SerialPort({
+      path: body.port,
       baudRate: body.baudRate,
     });
     res.send(await SerialPort.list());
     next();
   });
 };
-const allApisPrinter = (app) => {
+const fileBill = async (app) => {
+  app.put(`/api/bill`, async (req, res, next) => {
+    const body = req.body;
+    console.log(body);
+    try {
+      fs.readFile(
+        path.join(__dirname, "/phieucan.html"),
+        { encoding: "utf8" },
+        async (err, data) => {
+         // body.isPreview,body.printerName,body.pageSize,body.data,body.rawHtml
+          ;
+          res.send({data:await posPrintThermal(body)});
+          return res.end();
+        }
+      );
+    } catch (err) {
+      res.send(err);
+    }
+
+    //next();
+  });
+};
+const allApisPrinter = async (app) => {
   getListPrinter(app);
   thermalPrinter(app);
   getEventWindow(app);
   getComs(app);
   configSerial(app);
+  await fileBill(app);
 };
 module.exports = { getListPrinter, thermalPrinter, allApisPrinter, getComs };

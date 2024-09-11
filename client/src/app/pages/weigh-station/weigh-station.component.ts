@@ -81,6 +81,7 @@ export class WeighStationComponent {
     price: 0,
     productName: '',
     unit: '',
+    exchangeRate: 0,
   };
   optionsTable: any = {
     url: 'weighStation',
@@ -150,7 +151,6 @@ export class WeighStationComponent {
     private fb: FormBuilder
   ) {}
   async ngOnInit(): Promise<void> {
-   
     if (getItem(this.keyPrice)) this.defaultY.price = getItem(this.keyPrice);
     if (getItem(this.keyTage)) this.defaultY.tage = getItem(this.keyTage);
     if (getItem(this.keyTageKg)) this.defaultY.tageKg = getItem(this.keyTageKg);
@@ -188,6 +188,7 @@ export class WeighStationComponent {
       isActive: this.objx.isActive,
       id: this.objx.id || 0,
       customerId: '',
+      exchangeRate: this.objx.exchangeRate,
     }) as FormGroup;
     //this.form.controls['tage'].setValue(getItem(this.keyTage))
   }
@@ -243,6 +244,9 @@ export class WeighStationComponent {
   onChangeRadio(event: any) {}
   async savePrint() {
     await this.ngSubmit();
+    this.services
+      .update1({ t: 'kakk' }, 'bill')
+      .then((e: any) => console.log(e));
   }
 
   async onDelete() {

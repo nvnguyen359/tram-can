@@ -47,10 +47,17 @@ const createWeighStation = async (knex) => {
       table.integer("weight2").notNullable();
       table.integer("cargoVolume");
       table.double("tare");
-      table.string("customerId");
+      table.double("tareKg");
       table.string("type", 250);
       table.text("note");
+      table.boolean("isActive");
+      table.string("ieGoods");
+      table.integer("price");
+      table.string("productName");
+      table.integer("exchangeRate");
+      table.string("unit");
       table.string("userId");
+      table.string("customerId");
       exoend(table);
     });
     // console.log(tbl, "successfully created");
@@ -155,7 +162,7 @@ const initTable = async (knex) => {
     tb = await setting(knex);
     tables.push(tb);
     res(tables);
-    await afterTabletramCan(knex);
+   // await afterTabletramCan(knex);
   });
 };
 const afterTabletramCan = async (knex) => {
