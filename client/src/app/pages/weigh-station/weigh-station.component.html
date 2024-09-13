@@ -1,4 +1,4 @@
-<div class="flex full-width row we" >
+<div class="flex full-width row we">
     <form class="flex full-width" style="    height: fit-content;" [formGroup]="form" (ngSubmit)="ngSubmit()">
         <fieldset style="max-width: 450px;">
             <legend>Phiếu Cân</legend>
@@ -27,13 +27,19 @@
                 <input type="hidden" formControlName="weight1">
                 <input type="hidden" formControlName="weight2">
                 <input type="hidden" formControlName="customerId">
+                <input type="hidden" formControlName="userId">
+                <input type="hidden" formControlName="createdAt">
+                <input type="hidden" formControlName="updatedAt">
             </div>
             <div class="sl-can margin-top_-18px">
                 <section class="example-section">
-                    <mat-radio-group formControlName="ieGoods" >
-                        <mat-radio-button *ngFor="let item of radioGroup" [value]="item"
+                    <mat-radio-group formControlName="ieGoods">
+                        <mat-radio-button *ngFor="let item of radioGroup" [value]="item" (click)="onClickRadio(item)"
                             (change)="onChangeRadio($event)">{{item}}</mat-radio-button>
                     </mat-radio-group>
+                    @if(notiError){
+                        <mat-error class="err" style="margin-left: 8px;margin-top: -2px;">Chú ý chọn kiểu <span style="color: rgb(143, 12, 148);">Nhập Hàng</span> hay <span style="color: blue;">Xuất Hàng</span></mat-error>
+                    }
                 </section>
             </div>
             <mat-accordion>
@@ -50,7 +56,8 @@
                         <div class="x-price flex row ">
                             <mat-form-field class="small margin-top_-18px position-abs">
                                 <mat-label> Trừ Bì (%)</mat-label>
-                                <mat-select formControlName="tare" [(ngModel)]="defaultY.tage" (selectionChange)="selectionChangeTapChat($event)">
+                                <mat-select formControlName="tare" [(ngModel)]="defaultY.tage"
+                                    (selectionChange)="selectionChangeTapChat($event)">
                                     @for (x of impurities; track x) {
                                     <mat-option [value]="x">{{x}}</mat-option>
                                     }
@@ -58,7 +65,8 @@
                             </mat-form-field>
                             <mat-form-field class="margin-top_-18px position-abs">
                                 <mat-label>Trừ Bì (Kg)</mat-label>
-                                <input matInput type="number" [(ngModel)]="defaultY.tageKg" (keyup)="keyUptageKg($event)"  formControlName="tareKg" min="0">
+                                <input matInput type="number" [(ngModel)]="defaultY.tageKg"
+                                    (keyup)="keyUptageKg($event)" formControlName="tareKg" min="0">
                                 @if (form.value.tareKg) {
                                 <button matSuffix mat-icon-button aria-label="Clear"
                                     (click)="form.controls['tareKg'].setValue('')">
@@ -69,8 +77,8 @@
 
                             <mat-form-field class="example-form-field margin-top_-18px">
                                 <mat-label>Đơn Giá</mat-label>
-                                <input matInput type="number" [(ngModel)]="defaultY.price"  formControlName="price" min="0"
-                                    (keyup)=" keypressDonGia($event)">
+                                <input matInput type="number" [(ngModel)]="defaultY.price" formControlName="price"
+                                    min="0" (keyup)=" keypressDonGia($event)">
                                 @if (form.value.tare) {
                                 <button matSuffix mat-icon-button aria-label="Clear"
                                     (click)="form.controls['tare'].setValue('')">
@@ -80,8 +88,8 @@
                             </mat-form-field>
                             <mat-form-field class="small margin-top_-18px">
                                 <mat-label>Đơn Vị</mat-label>
-                                <mat-select (selectionChange)="selectionChangeUnit($event)" 
-                                    formControlName="unit" [(ngModel)]="defaultY.unit" [ngModelOptions]="{standalone: true}">
+                                <mat-select (selectionChange)="selectionChangeUnit($event)" formControlName="unit"
+                                    [(ngModel)]="defaultY.unit" [ngModelOptions]="{standalone: true}">
                                     <mat-option value="VND">VND</mat-option>
                                     <mat-option value="USD">USD</mat-option>
                                     <mat-option value="RIEL">RIEL</mat-option>
@@ -93,7 +101,8 @@
                             <div class="flex row full-width">
                                 <mat-form-field class="margin-top_-18px" style="max-width: 150px;">
                                     <mat-label>Đơn Vị</mat-label>
-                                    <mat-select (selectionChange)="selectionChangeUnitTi($event)" [(ngModel)]="defaultY.unitTi" [ngModelOptions]="{standalone: true}" >
+                                    <mat-select (selectionChange)="selectionChangeUnitTi($event)"
+                                        [(ngModel)]="defaultY.unitTi" [ngModelOptions]="{standalone: true}">
                                         <mat-option value="USD">USD</mat-option>
                                         <mat-option value="RIEL">RIEL</mat-option>
                                     </mat-select>
@@ -131,30 +140,37 @@
                     </div>
                 </div>
                 <div class="flex row center group ">
-                    <app-input-custom [obj]="obj"  (outputValue)="outputValue($event)"></app-input-custom>
+                    <app-input-custom [obj]="obj" (outputValue)="outputValue($event)"></app-input-custom>
                     <app-input-custom [obj]="obj1" (outputValue)="outputValue($event)"
                         style="margin-left: 4px;"></app-input-custom>
+                        <button mat-mini-fab color="accent" type="reset"  #tooltip="matTooltip" matTooltipPosition="above" (click)="resetForm()"  matTooltip="Tạo phiếu cân mới">
+                            <mat-icon>edit</mat-icon>
+                          </button>
                 </div>
 
                 <section class="sl-can margin-top_-18px" aria-disabled="true">
                     <div class="left">
                         <button mat-flat-button color="primary" type="button" style="border: 1px soild red;"
                             (click)="btCanXeClick()"><span>Chốt Cân</span>
-                            <mat-icon>autorenew</mat-icon></button>
-
+                            </button>
+                            <button mat-flat-button color="accent" type="button" style="border: 1px soild red;"
+                            (click)="reviewBill()"><span>Xem Phiếu</span>
+                            </button>
                     </div>
 
                     <div class="right">
                         <button mat-flat-button color="accent" (click)="savePrint()" [disabled]="!form.valid"
-                            type="button"><mat-icon>printer</mat-icon><span>Lưu và In</span></button>
-                        <button mat-flat-button color="primary"  [disabled]="!form.valid"
+                            type="button"><mat-icon>printer</mat-icon><span>In Phiếu</span></button>
+                        <button mat-flat-button color="primary" [disabled]="!form.valid"
                             type="submit"><mat-icon>save</mat-icon><span>Lưu</span></button>
-                        <button mat-flat-button color="accent" type="button"[disabled]="!form.valid" (click)="onDelete()">Xóa
+                        <button mat-flat-button color="accent" type="button" [disabled]="!form.valid"
+                            (click)="onDelete()">Xóa
                             &nbsp;<mat-icon>delete</mat-icon></button>
                     </div>
                 </section>
             </div>
         </fieldset>
     </form>
+  
     <app-expansion-table [options]="optionsTable" (eventUpsert)="eventUpsertTable($event)"></app-expansion-table>
 </div>

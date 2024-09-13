@@ -1,4 +1,7 @@
 // Import builtin NodeJS modules to instantiate the service
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 
 require("dotenv").config({ path: "./../.env" });
 const { getListPrinter, allApisPrinter } = require("./apis/apiInfo");
@@ -128,5 +131,8 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/imgs", express.static(path.join(__dirname, "imgs")));
 app.use("/public", express.static("public"));
 app.use("/app/public", express.static("public"));
-
+var options = {
+  explorer: true
+};
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 module.exports = app;

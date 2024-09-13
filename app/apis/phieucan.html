@@ -10,6 +10,11 @@
       text-align: center;
     }
 
+    body {
+      margin: auto;
+      margin-top: 8px;
+    }
+
     .main {
       display: flex;
       width: 100%;
@@ -54,9 +59,21 @@
       font-weight: 800;
     }
 
+    .left {
+      text-align: left;
+    }
+
+    .right {
+      text-align: right;
+    }
+
     .ft {
       display: block;
       text-align: right;
+    }
+
+    .hide {
+      display: none;
     }
 
     footer {
@@ -97,6 +114,7 @@
       height: auto;
       padding-bottom: 100px;
     }
+
     .a5 {
       width: 148mm;
       height: auto;
@@ -106,11 +124,11 @@
 </head>
 
 <body>
-  <div class="main a4">
+  <div class="main {{PAGESIZE}}">
     <div class="top">
-      <div class="full-width nameCompany">TENCONGTY</div>
-      <div class="full-width nameCompany c1">DIACHI</div>
-      <div class="full-width nameCompany c1"> FONE</div>
+      <div class="full-width nameCompany">{{TENCONGTY}}</div>
+      <div class="full-width nameCompany c1">{{DIACHI}}</div>
+      <div class="full-width nameCompany c1"> {{PHONE}}</div>
     </div>
     <h2 class="text-center">PHIẾU CÂN</h2>
     <div class="table">
@@ -118,72 +136,78 @@
 
         <tr>
           <td>Hàng Hóa</td>
-          <td colspan="3">Mì Lát</td>
+          <td colspan="1" class="right">{{productName}}</td>
+          <td>Mã Số</td>
+          <td colspan="1">{{id}}</td>
         </tr>
+
         <tr>
           <td>Khách Hàng</td>
-          <td colspan="3" class="weight">Lê Hồng Anh</td>
-
+          <td colspan="1" class="weight right">{{customerName}}</td>
+          <td colspan="2"></td>
         </tr>
         <tr>
           <td>Biển Số Xe</td>
-          <td>BIENSOXE</td>
+          <td class="right">{{carNumber}}</td>
           <td>Số Chứng Từ</td>
-          <td>CHUNGTU</td>
+          <td> </td>
         </tr>
         <tr>
           <td>TL Hàng và Xe</td>
-          <td class="weight">HANGXE</td>
+          <td class="weight right">{{weight1}}</td>
           <td>Thời Gian Cân</td>
-          <td>TIME1</td>
+          <td>{{createdAt1}}</td>
         </tr>
         <tr>
           <td>TL Xe</td>
-          <td class="weight">XE</td>
+          <td class="weight right">{{weight2}}</td>
           <td>Thời Gian Cân</td>
-          <td>TIME2</td>
+          <td>{{updatedAt1}}</td>
         </tr>
         <tr>
           <td>TL Hàng</td>
-          <td class="weight">HANG</td>
+          <td class="weight right">{{cargoVolume}}</td>
           <td>Kiểu Cân</td>
-          <td>KIEUCAN</td>
+          <td>{{ieGoods}}</td>
         </tr>
         <tr>
           <td>Tạp Chất(trừ Bì)</td>
-          <td class="weight">TRUBI</td>
+          <td class="weight right">{{tareKg}}</td>
           <td>Quy Đổi</td>
-          <td class="weight">PHANTRAM%</td>
+          <td class="weight">{{tare}}</td>
         </tr>
         <tr>
           <td>TL Thanh Toán</td>
-          <td colspan="4" class="weight">HANG</td>
+          <td colspan="1" class="weight right">{{payVolume}}</td>
+          <td colspan="3" class="weight right"></td>
         </tr>
       </table>
-      <h2 class="text-center">HÓA ĐƠN</h2>
-      <table>
-        <thead class="co">
-          <tr>
-            <th>STT</th>
-            <th>Trọng Lượng(Kg)</th>
-            <th>Đơn Giá</th>
-            <th>Thành Tiền</th>
-          </tr>
-        </thead>
+      <div class="{{hide}}">
+        <h2 class="text-center">HÓA ĐƠN</h2>
+        <table>
+          <thead class="co">
+            <tr>
+              <th>STT</th>
+              <th>Trọng Lượng(Kg)</th>
+              <th>Đơn Giá</th>
+              <th>Thành Tiền</th>
+            </tr>
+          </thead>
 
-        <tbody class="co">
-          <tr>
-            <td>1</td>
-            <td>HANG</td>
-            <td>DONGIA</td>
-            <td>THANHTIEN</td>
-          </tr>
-        </tbody>
-      </table>
-      <p style="margin-left: 8px;">Bằng chữ:<span class="bangchu">BANGCHU./</span></p>
+          <tbody class="co">
+            <tr>
+              <td>1</td>
+              <td>{{cargoVolume}}</td>
+              <td>{{price}}</td>
+              <td>{{pay}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-left: 8px;">Bằng chữ:<span class="bangchu">{{BANGCHU}}./</span></p>
+      </div>
     </div>
     <div class="ft">
-     NGAY
+      Ngày tạo đơn: {{NGAY}}
     </div>
     <footer>
       <div>

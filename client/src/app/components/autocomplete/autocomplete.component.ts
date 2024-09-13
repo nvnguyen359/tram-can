@@ -91,6 +91,12 @@ export class AutocompleteComponent {
       map((value: any) => this._filter(value || ''))
     );
   }
+  focus(){
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map((value: any) => this._filter(value || ''))
+    );
+  }
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.

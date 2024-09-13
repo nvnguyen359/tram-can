@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { SerialportComponent } from 'src/app/components/serialport/serialport.component';
+import { ImportsModule } from 'src/app/imports';
 
 
 @NgModule({
@@ -21,12 +22,8 @@ import { SerialportComponent } from 'src/app/components/serialport/serialport.co
   ],
   imports: [
     CommonModule,
-    SettingRoutingModule,
-    MatCardModule,
-    PrintersComponent,
-    MatFormFieldModule, MatInputModule, MatSelectModule,AutocompleteComponent,
-    NgFor,
-    FormsModule,ReactiveFormsModule,MatIconModule,SerialportComponent
+    SettingRoutingModule, PrintersComponent,SerialportComponent,AutocompleteComponent,
+   ImportsModule
   ]
 })
 export class SettingModule { }

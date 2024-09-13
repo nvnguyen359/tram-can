@@ -112,6 +112,26 @@ const configSerial = (app) => {
   });
 };
 const fileBill = async (app) => {
+  app.get(`/api/bill`, async (req, res, next) => {
+    const body = req.body;
+    console.log(body);
+    try {
+      fs.readFile(
+        path.join(__dirname, "/phieucan.html"),
+        { encoding: "utf8" },
+        async (err, data) => {
+          res.send({data});
+          return res.end();
+        }
+      );
+    } catch (err) {
+      res.send({err});
+    }
+
+    //next();
+  });
+};
+const printBill = async (app) => {
   app.put(`/api/bill`, async (req, res, next) => {
     const body = req.body;
     console.log(body);
@@ -140,5 +160,6 @@ const allApisPrinter = async (app) => {
   getComs(app);
   configSerial(app);
   await fileBill(app);
+  await printBill(app);
 };
 module.exports = { getListPrinter, thermalPrinter, allApisPrinter, getComs };

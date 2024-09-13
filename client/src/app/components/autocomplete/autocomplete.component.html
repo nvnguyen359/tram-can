@@ -1,6 +1,6 @@
 <mat-form-field class="full-width small" appearance="outline">
     <mat-label>{{options.label}}</mat-label>
-    <input type="text" placeholder="{{options.placeholder}}" [required]="required" aria-label="Sản Phẩm" matInput
+    <input type="text" placeholder="{{options.placeholder}}" [required]="required" aria-label="Sản Phẩm" matInput (focus)="focus()"
         [(ngModel)]="default" [matAutocomplete]="auto" (keyup)="onKeyup($event)" [formControl]="myControl">
     <button matSuffix mat-icon-button aria-label="Clear" (click)="default=''" *ngIf="default">
         <mat-icon>close</mat-icon>

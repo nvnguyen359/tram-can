@@ -1,3 +1,4 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { Component, SimpleChanges } from '@angular/core';
 import {
   FormBuilder,
@@ -5,12 +6,18 @@ import {
   NG_VALUE_ACCESSOR,
   Validators,
 } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Socket } from 'ngx-socket-io';
+import { DialogConfirmComponent } from 'src/app/Components/dialog-confirm/dialog-confirm.component';
+import { DisplayHtmlComponent } from 'src/app/components/display-html/display-html.component';
+import { DynamicUpsertComponent } from 'src/app/Components/dynamic-upsert/dynamic-upsert.component';
 import { delay, getItem, setItem, Status } from 'src/app/general';
+import { BILL } from 'src/app/Models/bill';
 import { ResponseTramCan } from 'src/app/Models/ResponseTramCan';
-import { WeighStation } from 'src/app/Models/weighStation';
+import { WeighingSlip, WeighStation } from 'src/app/Models/weighStation';
 import { ApiService } from 'src/app/services/api.service';
 import { DataService } from 'src/app/services/data.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -127,6 +134,7 @@ export class WeighStationComponent {
     require: false,
     id: 2,
   };
+  notiError = false;
   form: any = null;
   panelOpenState = false;
   weight: any = '';
@@ -143,12 +151,15 @@ export class WeighStationComponent {
     unit: 'VND',
     unitTi: 'USD',
   };
+  rawHtml = '';
   constructor(
     private socketService: SocketService,
     private socket: Socket,
     private services: ApiService,
     private dataService: DataService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackbar: SnackbarService,
+    private dialog: MatDialog
   ) {}
   async ngOnInit(): Promise<void> {
     if (getItem(this.keyPrice)) this.defaultY.price = getItem(this.keyPrice);
@@ -187,13 +198,15 @@ export class WeighStationComponent {
       type: this.objx.type,
       isActive: this.objx.isActive,
       id: this.objx.id || 0,
-      customerId: '',
+      customerId: this.objx.customerId || '',
+      userId: this.objx.userId || '',
       exchangeRate: this.objx.exchangeRate,
+      updatedAt: this.objx.updatedAt || new Date(),
+      createdAt: this.objx.createdAt || new Date(),
     }) as FormGroup;
     //this.form.controls['tage'].setValue(getItem(this.keyTage))
   }
   outputValue(event: any) {
-    // console.log(event);
     switch (event.key) {
       case 1:
         {
@@ -216,14 +229,21 @@ export class WeighStationComponent {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
   }
+  resetForm() {
+    this.form.patchValue(this.objReset);
+  }
   async ngSubmit() {
     const value = this.form.value;
-    // console.log(value);
+    if (value.weight1 == '') value.weight1 = 0;
+    if (value.weight2 == '' || value.weight2 == null) value.weight2 = 0;
+    value.updatedAt = new Date();
+    if (Number.isNaN(value.cargoVolume)) value.cargoVolume = 0;
     if (value.id == 0) {
       this.services.create1(value).then((e: any) => console.log(e));
     } else {
       this.services.update1(value);
     }
+    await delay(500);
     this.form.patchValue(this.objReset);
   }
   selectionChangeTapChat(event: any) {
@@ -243,12 +263,82 @@ export class WeighStationComponent {
   }
   onChangeRadio(event: any) {}
   async savePrint() {
-    await this.ngSubmit();
-    this.services
-      .update1({ t: 'kakk' }, 'bill')
-      .then((e: any) => console.log(e));
+    // await this.ngSubmit();
   }
+  minMax() {
+    const t = this.form.value as WeighStation;
+    const check = parseInt(t.weight1) > parseInt(t.weight2);
+    return {
+      max: check ? t.weight1 : t.weight2,
+      min: !check ? t.weight1 : t.weight2,
+      isMax: check,
+    };
+  }
+  includesDataInBill(html: string, data: any = null): string {
+    if (!data) data = this.form.value;
 
+    //console.log('data', this.form.value);
+    const item = getItem('print');
+
+    // if (!item) return;
+    const minmax = this.minMax();
+    const printer = item.printer;
+    const company = JSON.parse(getItem('company'));
+    const t = data as WeighingSlip;
+    t.TENCONGTY = company.name;
+    t.DIACHI = company.address;
+    t.PHONE = company.phone;
+    t.BANGCHU = 'bang chu';
+    t.id = data.id;
+    t.carNumber = data.carNumber;
+    t.weight1 = minmax.max.toLocaleString('vi-VN');
+    t.weight2 = minmax.min.toLocaleString('vi-VN');
+    t.productName = data.productName;
+    t.PAGESIZE = item.page.value == '210mm' ? 'a4' : 'a5';
+    t.cargoVolume = t.cargoVolume.toLocaleString('vi-VN');
+    //console.log(t.updatedAt,new Date(t.updatedAt).toLocaleTimeString())
+    t.createdAt1 = minmax.isMax
+      ? new Date(t.createdAt).toLocaleString('vi-VN')
+      : new Date(t.updatedAt).toLocaleString('vi-VN');
+    t.updatedAt1 = !minmax.isMax
+      ? new Date(t.createdAt).toLocaleString('vi-VN')
+      : new Date(t.updatedAt).toLocaleString('vi-VN');
+    t.NGAY = new Date().toLocaleDateString();
+    t.hide = !t.price ? 'hide' : '';
+    if (t.tareKg == null) {
+      t.tareKg = 0;
+      t.tare = '0%';
+    }
+    t.payVolume = (t.cargoVolume - t.tareKg).toLocaleString('vi-VN');
+    const keys = Object.keys(t);
+    const t1 = t as any;
+    for (let index = 0; index < keys.length; index++) {
+      const element = keys[index];
+      // console.log(element);
+      html = html.replaceAll(`{{${element}}}`, t1[element]);
+    }
+    return html;
+  }
+  reviewBill() {
+    this.services.get('bill').then((e: any) => {
+      if (e.data.includes('TimedOutError')) {
+        this.snackbar.openSnackBar(e.data);
+      } else {
+        this.rawHtml = e.data;
+        this.rawHtml = this.includesDataInBill(this.rawHtml, this.form.value);
+        this.dialog.open(DisplayHtmlComponent, { data: this.rawHtml });
+      }
+    });
+  }
+  onClickRadio(item: any) {
+    const value = this.form.value;
+    if (`${item}`.includes('Nhập Hàng'))
+      this.notiError =
+        value.weight1 < value.weight2 && `${item}`.includes('Nhập Hàng');
+    if (`${item}`.includes('Xuất Hàng'))
+      this.notiError =
+        value.weight1 > value.weight2 && `${item}`.includes('Xuất Hàng');
+  }
   async onDelete() {
     this.services.destroy1(this.objx.id);
   }
@@ -291,6 +381,7 @@ export class WeighStationComponent {
     this.form.controls[event.key].setValue(event.value);
   }
   onSelectedAuto(event: any) {}
+
   eventUpsertTable(event: WeighStation) {
     // console.log(event);
     this.objx = event;

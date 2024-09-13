@@ -43,7 +43,7 @@ class MainScreen {
 
     this.window.once("ready-to-show", () => {
       this.window.show();
-     // this.window.webContents.openDevTools();
+     //this.window.webContents.openDevTools();
       if (this.position.maximized) {
         this.window.maximize();
       }
