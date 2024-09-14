@@ -19,6 +19,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { SettingComponent } from '../setting/setting.component';
 
 @Component({
   selector: 'app-weigh-station',
@@ -58,10 +59,10 @@ export class WeighStationComponent {
     default: '',
   };
   optionWeighType = {
-    name: 'type',
-    showtext: 'type',
-    label: 'Loại Hàng',
-    placeholder: 'Tìm kiếm loại hàng...',
+    name: 'numberOfContainers',
+    showtext: 'numberOfContainers',
+    label: 'Số container',
+    placeholder: 'Tìm kiếm số container...',
     banks: '',
     url: 'weighStation',
     showButton: false,
@@ -77,7 +78,7 @@ export class WeighStationComponent {
     cargoVolume: 0,
     tare: '',
     customerId: '',
-    type: '',
+    numberOfContainers: '',
     note: null,
     userId: null,
     createdAt: new Date(),
@@ -102,7 +103,7 @@ export class WeighStationComponent {
       'cargoVolume',
       'tage',
       'price',
-      'type',
+      'numberOfContainers',
       'ieGoods',
       'updatedAt',
     ],
@@ -152,6 +153,7 @@ export class WeighStationComponent {
     unitTi: 'USD',
   };
   rawHtml = '';
+  isSetting = false;
   constructor(
     private socketService: SocketService,
     private socket: Socket,
@@ -162,6 +164,18 @@ export class WeighStationComponent {
     private dialog: MatDialog
   ) {}
   async ngOnInit(): Promise<void> {
+    const inputs = document.querySelectorAll('input');
+    if (inputs.length > 0) {
+      inputs.forEach((item: HTMLElement) => {
+        item.addEventListener('focus', () => {
+          this.isSetting = this.checkSetting();
+          if (this.isSetting) {
+            return;
+          }
+        });
+      });
+    }
+    this.checkSetting();
     if (getItem(this.keyPrice)) this.defaultY.price = getItem(this.keyPrice);
     if (getItem(this.keyTage)) this.defaultY.tage = getItem(this.keyTage);
     if (getItem(this.keyTageKg)) this.defaultY.tageKg = getItem(this.keyTageKg);
@@ -177,6 +191,24 @@ export class WeighStationComponent {
     //Add 'implements OnInit' to the class.
     this.createImpurities();
     await this.receiveMessage();
+  }
+  checkSetting() {
+    const item = getItem('print');
+    const item1 = getItem('company');
+    const item2 = getItem('serial');
+    if (!(item && item1 && item2)) {
+      const dialogRef = this.dialog.open(DialogConfirmComponent, {
+        data: { header: 'Bạn cần thiết lập thông tin cần thiết!' },
+      });
+      dialogRef.afterClosed().subscribe((e: boolean) => {
+        if (e) {
+          this.dialog.open(SettingComponent);
+        }
+      });
+      return true;
+    } else {
+      return false;
+    }
   }
   async ngAfterViewInit() {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
@@ -195,7 +227,7 @@ export class WeighStationComponent {
       ieGoods: [this.objx.ieGoods, [Validators.required]],
       customerName: [this.objx.customerName, [Validators.required]],
       productName: [this.objx.productName, [Validators.required]],
-      type: this.objx.type,
+      type: this.objx.numberOfContainers,
       isActive: this.objx.isActive,
       id: this.objx.id || 0,
       customerId: this.objx.customerId || '',
@@ -279,11 +311,11 @@ export class WeighStationComponent {
 
     //console.log('data', this.form.value);
     const item = getItem('print');
+    const item1 = getItem('company');
 
-    // if (!item) return;
     const minmax = this.minMax();
     const printer = item.printer;
-    const company = JSON.parse(getItem('company'));
+    const company = JSON.parse(item1);
     const t = data as WeighingSlip;
     t.TENCONGTY = company.name;
     t.DIACHI = company.address;
@@ -307,7 +339,6 @@ export class WeighStationComponent {
     t.hide = !t.price ? 'hide' : '';
     if (t.tareKg == null) {
       t.tareKg = 0;
-      t.tare = '0%';
     }
     t.payVolume = (t.cargoVolume - t.tareKg).toLocaleString('vi-VN');
     const keys = Object.keys(t);
@@ -388,7 +419,7 @@ export class WeighStationComponent {
     this.optionCarNumber.default = event.carNumber;
     this.optionCustomer.default = event.customerName;
     this.optionWeighProductName.default = event.productName;
-    this.optionWeighType.default = event.type;
+    this.optionWeighType.default = event.numberOfContainers;
     this.obj.value = event.weight1.toString();
     this.obj1.value = event.weight2.toString();
     this.form.patchValue(event);

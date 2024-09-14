@@ -15,7 +15,7 @@
                     (keyUp)="keyUpAutoComplate($event)" (selectTed)="onSelectedAuto($event)"></app-autocomplete>
 
                 <app-autocomplete [options]="optionWeighType" [data]="weighStations" class="margin-top_-18px"
-                    [required]="true" (keyUp)="keyUpAutoComplate($event)" (selectTed)="onSelectedAuto($event)"
+                     (keyUp)="keyUpAutoComplate($event)" (selectTed)="onSelectedAuto($event)"
                     [default]="optionWeighType.default"></app-autocomplete>
 
                 <input type="hidden" name="" formControlName="id">

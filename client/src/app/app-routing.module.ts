@@ -24,6 +24,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/setting/setting.module').then((m) => m.SettingModule),
   },
+  { path: BaseApiUrl.TrangChu, loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) },
 ];
 
 @NgModule({

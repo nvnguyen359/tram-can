@@ -1,0 +1,27 @@
+<form action="" [formGroup]="form" (ngSubmit)="ngSubmit()">
+    <div class="flex row">
+        <mat-card style="margin-right: 4px;">
+            <mat-card-content>
+                <div class="flex row group center padding-4 ">
+                    <app-display-number></app-display-number>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-content>
+                <div class="flex row xc">
+                    <app-display-number></app-display-number>
+                    <div> <app-display-number ></app-display-number></div>
+                    <div> <app-display-number [inputObj]="objTare"></app-display-number></div>
+                    <app-display-number></app-display-number>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <div class="flex">
+           
+            <ad-autocomplete formControlName="name"  required="true" (onSelection)="onSelectionx($event)"></ad-autocomplete>
+            <ad-autocomplete [(ngModel)]="mo" [required]="true" [ngModelOptions]="{standalone: true}"></ad-autocomplete>
+        </div>
+        <button type="submit" matRipple>ok</button>
+    </div>
+</form>

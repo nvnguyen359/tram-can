@@ -1,0 +1,68 @@
+mat-icon {
+    position: absolute;
+    top: 1px;
+    right: 2px;
+    z-index: 11;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    cursor: pointer;
+    transition: 0.2s background ease-in;
+    padding: 4px;
+}
+
+mat-icon:hover {
+    background: rgba(117, 116, 116, 0.452);
+}
+
+input {
+    height: 26px;
+    transition: all 0.1s ease-in 0s;
+    border-radius: 4px;
+}
+input:hover{
+    border-color: rgb(226, 55, 248);
+}
+div {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+}
+
+input~label {
+    position: absolute;
+    left: 4px;
+    display: block;
+    transition: top 0.1s ease-in 0s;
+    /* only transition top property */
+    top: 0;
+    /* start transitioning from position '0' instead of 'auto' */
+    transform: scaleX(0);
+    font-size: 12px;
+}
+
+input:focus~label,input:active~label {
+    position: absolute;
+    left: 6px;
+    display: block;
+    top: -12px;
+    transform: scaleX(1);
+    background: white;
+    padding: 2px;
+    padding-bottom: 0!important;
+    transition: top 0.1s ease-in 0s;
+}
+label.op {
+    position: absolute;
+    left: 6px!important;
+    display: block!important;
+    top: -12px!important;
+    transform: scaleX(1)!important;
+    background: white!important;
+    padding: 2px!important;
+    padding-bottom: 0;
+    transition: top 0.1s ease-in 0s;
+}

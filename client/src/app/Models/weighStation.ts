@@ -7,7 +7,7 @@ export interface WeighStation {
     cargoVolume: any
     tare: string
     customerId: string
-    type: string
+    numberOfContainers: string
     note: any
     userId: any
     createdAt: any

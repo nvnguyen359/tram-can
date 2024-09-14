@@ -239,6 +239,12 @@ button {
 .margin-top_-16px {
     margin-top: -16px;
 }
+.margin-r4{
+    margin-right: 4px;
+}
+.shadow{
+    box-shadow: var(--mdc-elevated-card-container-elevation);
+}
 // mat-form-field.small {
 //     --mat-form-field-container-height: 40px;
 //     --mat-form-field-container-vertical-padding: 8px;

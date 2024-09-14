@@ -48,7 +48,7 @@ const createWeighStation = async (knex) => {
       table.integer("cargoVolume");
       table.double("tare");
       table.double("tareKg");
-      table.string("type", 250);
+      table.string("numberOfContainers", 250);
       table.text("note");
       table.boolean("isActive");
       table.string("ieGoods");

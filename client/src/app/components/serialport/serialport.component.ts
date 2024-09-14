@@ -52,6 +52,7 @@ export class SerialportComponent {
       },
       'changePort'
     );
+    setItem(this.keyLocal, JSON.stringify(this.ngModel));
     if (this.socket.disconnect()) this.socket.connect();
   }
   async getPorts() {
