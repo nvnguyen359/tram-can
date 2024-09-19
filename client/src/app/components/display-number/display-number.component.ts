@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ImportsModule } from 'src/app/imports';
+import { displayNumber } from 'src/app/Models/disolayNumber';
 
 @Component({
   selector: 'app-display-number',
@@ -9,12 +10,11 @@ import { ImportsModule } from 'src/app/imports';
   styleUrl: './display-number.component.scss',
 })
 export class DisplayNumberComponent {
-  @Input() inputObj = {
+  @Input() inputObj:displayNumber = {
     label: 'Bàn Cân',
     value: 0,
     time: '',
-    take: 0,
-    modelDefault: '0%',
+    tare:'' ,
   };
   tapchats: any = [];
   modelDefault = '5%';
@@ -30,7 +30,6 @@ export class DisplayNumberComponent {
     }
   }
   onChange(event: any) {
-    this.inputObj.modelDefault = event.target.value;
-    this.eventOutput.emit(this.inputObj.modelDefault);
+    this.eventOutput.emit(this.inputObj.tare);
   }
 }

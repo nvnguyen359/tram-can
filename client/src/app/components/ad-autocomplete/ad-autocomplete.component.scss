@@ -1,6 +1,6 @@
 mat-icon {
     position: absolute;
-    top: 1px;
+    top: calc(5% );
     right: 2px;
     z-index: 11;
     border-radius: 50%;
@@ -9,21 +9,23 @@ mat-icon {
     justify-content: space-evenly;
     cursor: pointer;
     transition: 0.2s background ease-in;
-    padding: 4px;
+    padding: 2px;
+    font-size: 20px;
 }
 
 mat-icon:hover {
-    background: rgba(117, 116, 116, 0.452);
+    background: rgba(117, 116, 116, 0.252);
 }
 
 input {
-    height: 26px;
+    height: 24px;
     transition: all 0.1s ease-in 0s;
     border-radius: 4px;
 }
-input:hover{
-    border-color: rgb(226, 55, 248);
+.ad-au input{
+    width: 100%;
 }
+
 div {
     position: relative;
     top: 0;
@@ -42,17 +44,24 @@ input~label {
     /* start transitioning from position '0' instead of 'auto' */
     transform: scaleX(0);
     font-size: 12px;
+    color: rgba(0, 0, 0, 0.781);
+    padding: 1px;
+    border-radius: 5px;
+
+}
+.ad-au{
+   padding-bottom: 4px;
 }
 
 input:focus~label,input:active~label {
     position: absolute;
     left: 6px;
     display: block;
-    top: -12px;
+    top: -11px;
     transform: scaleX(1);
-    background: white;
-    padding: 2px;
-    padding-bottom: 0!important;
+    background: var(--background);
+   
+  
     transition: top 0.1s ease-in 0s;
 }
 label.op {
@@ -65,4 +74,5 @@ label.op {
     padding: 2px!important;
     padding-bottom: 0;
     transition: top 0.1s ease-in 0s;
+    font-size: 9px;
 }

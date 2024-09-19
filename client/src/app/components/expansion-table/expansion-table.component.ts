@@ -291,8 +291,13 @@ export class ExpansionTableComponent {
     // console.log(result1);
     this.eventUpsert.emit(result1);
   }
-  onRowClick(item: any) {
+  onRowClick(item: any,event:any,index:any) {
     this.eventUpsert.emit(item);
+    const rows= document.querySelectorAll('.mat-mdc-row');
+    rows.forEach((e:any)=>e.classList.remove('active'));
+    (event.target as HTMLElement).closest('.mat-mdc-row')?.classList.add('active')
+    event.preventDefault();
+    //event.stopPropagation();
   }
   onCreate() {}
   //******************************************** */

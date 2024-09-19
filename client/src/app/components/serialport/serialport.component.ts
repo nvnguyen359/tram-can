@@ -67,7 +67,7 @@ export class SerialportComponent {
       if (response.data != 0) {
         setItem(this.keyLocal, JSON.stringify(this.ngModel));
         await delay(5000);
-        this.socket.disconnect();
+        //this.socket.disconnect();
         this.showProgress = false;
       }
     });

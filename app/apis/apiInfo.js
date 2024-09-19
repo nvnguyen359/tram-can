@@ -1,5 +1,6 @@
-const { posPrintThermal, setThermal } = require("../shares/posPrinter");
-
+const excelJS = require("exceljs");
+const { posPrintThermal, posPrinter } = require("../shares/posPrinter");
+const { CRUDKNEX } = require("../features/crudKnex");
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
@@ -120,12 +121,12 @@ const fileBill = async (app) => {
         path.join(__dirname, "/phieucan.html"),
         { encoding: "utf8" },
         async (err, data) => {
-          res.send({data});
+          res.send({ data });
           return res.end();
         }
       );
     } catch (err) {
-      res.send({err});
+      res.send({ err });
     }
 
     //next();
@@ -134,15 +135,14 @@ const fileBill = async (app) => {
 const printBill = async (app) => {
   app.put(`/api/bill`, async (req, res, next) => {
     const body = req.body;
-    console.log(body);
+    // console.log(body);
     try {
       fs.readFile(
         path.join(__dirname, "/phieucan.html"),
         { encoding: "utf8" },
         async (err, data) => {
-         // body.isPreview,body.printerName,body.pageSize,body.data,body.rawHtml
-          ;
-          res.send({data:await posPrintThermal(body)});
+          // body.isPreview,body.printerName,body.pageSize,body.data,body.rawHtml
+          res.send({ data: await posPrintThermal(body) });
           return res.end();
         }
       );
@@ -153,6 +153,52 @@ const printBill = async (app) => {
     //next();
   });
 };
+const printerHtml = async (app) => {
+  app.put(`/api/print-html`, async (req, res, next) => {
+    const { printerName, rawHtml, pageSize } = req.body;
+    await posPrinter({ printerName, rawHtml, pageSize });
+    res.send({ data: "Đã in xong!" });
+    return res.end();
+  });
+};
+const downloadExcel = async (app) => {
+  app.get(`/api/downloadExcel`, async (req, res, next) => {
+    const body = req.body;
+    let crud = new CRUDKNEX("weighStation");
+    const data = await crud.findAll();
+    const workbook = new excelJS.Workbook();
+    const worksheet = workbook.addWorksheet("weighStation");
+
+    // Define columns in the worksheet
+    //worksheet.columns = [{ header: "Biển Số Xe", key: "carNumber", width: 15 }];
+    // Define columns in the worksheet
+    worksheet.columns = [
+      { header: "First Name", key: "fname", width: 15 },
+      { header: "Last Name", key: "lname", width: 15 },
+      { header: "Email", key: "email", width: 25 },
+      { header: "Gender", key: "gender", width: 10 },
+    ];
+
+    // Add data to the worksheet
+    data.items.forEach((user) => {
+      // console.log(user)
+      worksheet.addRow(user);
+    });
+    const fileName = `ReportDate${new Date().toLocaleDateString()}.xlsx`;
+    // Set up the response headers
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+    // Write the workbook to the response object
+    workbook.xlsx.write(res).then(() => res.end());
+    // res.send({ data });
+    // return res.end();
+  });
+};
+
 const allApisPrinter = async (app) => {
   getListPrinter(app);
   thermalPrinter(app);
@@ -161,5 +207,7 @@ const allApisPrinter = async (app) => {
   configSerial(app);
   await fileBill(app);
   await printBill(app);
+  await downloadExcel(app);
+  await printerHtml(app);
 };
 module.exports = { getListPrinter, thermalPrinter, allApisPrinter, getComs };

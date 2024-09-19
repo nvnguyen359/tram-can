@@ -9,17 +9,13 @@ const createUsers = async (knex) => {
       return tbl;
     }
     await knex.schema.createTable(tbl, (table) => {
-      table.increments("id", {
-        primaryKey: true,
-        notNullable: true,
-      });
       table.string("userName", 250).notNullable();
       table.string("password", 250).notNullable();
       table.string("level", 250).notNullable();
       table.string("status", 250);
       table.string("active");
       table.string("companyId");
-      exoend(table);
+      baseData(table);
     });
     // console.log(tbl, "successfully created");
     return tbl;
@@ -37,28 +33,31 @@ const createWeighStation = async (knex) => {
       return tbl;
     }
     await knex.schema.createTable(tbl, (table) => {
-      table.increments("id", {
-        primaryKey: true,
-        notNullable: true,
-      });
+      table.string("productName", 250);
       table.string("carNumber", 250).notNullable();
-      table.string("customerName", 250).notNullable();
       table.integer("weight1").notNullable();
-      table.integer("weight2").notNullable();
+      table.integer("weight2");
       table.integer("cargoVolume");
-      table.double("tare");
-      table.double("tareKg");
-      table.string("numberOfContainers", 250);
-      table.text("note");
-      table.boolean("isActive");
       table.string("ieGoods");
+      table.string("tare");
+      table.double("tareKg");
+      table.integer('actualVolume');
       table.integer("price");
-      table.string("productName");
+      table.double("pay");
       table.integer("exchangeRate");
       table.string("unit");
+      table.double('payment');// thanh toán sau quy đổi
+      table.string("containerNumber");
+      table.string("customerName");
+      table.string("note");
+      table.string("warehouse");// kho 
+      table.string("placeOfIssue");
+      table.string("recipient");
+      table.string("driver");
       table.string("userId");
       table.string("customerId");
-      exoend(table);
+      table.string("driverId");
+      baseData(table);
     });
     // console.log(tbl, "successfully created");
     return tbl;
@@ -75,16 +74,12 @@ const createCustomer = async (knex) => {
       return tbl;
     }
     await knex.schema.createTable(tbl, (table) => {
-      table.increments("id", {
-        primaryKey: true,
-        notNullable: true,
-      });
       table.string("name", 250);
       table.string("phone");
       table.string("address");
       table.string("email");
       table.string("userId");
-      exoend(table);
+      baseData(table);
     });
     // console.log(tbl, "successfully created");
     return tbl;
@@ -101,16 +96,12 @@ const createCompany = async (knex) => {
       return tbl;
     }
     await knex.schema.createTable(tbl, (table) => {
-      table.increments("id", {
-        primaryKey: true,
-        notNullable: true,
-      });
       table.string("name", 250);
       table.string("address");
       table.string("phone");
       table.string("fax");
       table.string("userId");
-      exoend(table);
+      baseData(table);
     });
     //console.log(tbl, "successfully created");
     return tbl;
@@ -119,7 +110,11 @@ const createCompany = async (knex) => {
   }
 };
 
-const exoend = (table) => {
+const baseData = (table) => {
+  table.increments("id", {
+    primaryKey: true,
+    notNullable: true,
+  });
   table.datetime("createdAt").notNullable();
   table.datetime("updatedAt");
 };
@@ -132,13 +127,9 @@ const setting = async (knex) => {
       return tbl;
     }
     await knex.schema.createTable(tbl, (table) => {
-      table.increments("id", {
-        primaryKey: true,
-        notNullable: true,
-      });
       table.string("name");
       table.string("jsonData");
-      exoend(table);
+      baseData(table);
     });
 
     // console.log(tbl, "successfully created");
@@ -162,7 +153,7 @@ const initTable = async (knex) => {
     tb = await setting(knex);
     tables.push(tb);
     res(tables);
-   // await afterTabletramCan(knex);
+    // await afterTabletramCan(knex);
   });
 };
 const afterTabletramCan = async (knex) => {

@@ -36,9 +36,10 @@ export class ApiService {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
       //
-      this.snackBar.openSnackBar(`${error.status}`);
+
+    //  this.snackBar.openSnackBar(`${error.message}`);
       console.error(
-        `Backend returned code ${error.status}, body was: `,
+        `Backend returned code ${error.message}, body was: `,
         error.error
       );
     }
@@ -197,8 +198,8 @@ export class ApiService {
         )
         .subscribe((data) => {
           this.dataService.sendMessage({ status: Status.Refesh });
-          this.snackBar.openSnackBar('Đã cập nhật thành công!');
-          console.log(data)
+          const mes = data?.data || 'Đã cập nhật thành công!';
+          this.snackBar.openSnackBar(mes);
           return res(data);
         });
     });
@@ -280,10 +281,11 @@ export class ApiService {
               )
               .subscribe((e) => {
                 this.snackBar.openSnackBar(`Đã xóa thành công! ${id}`);
+                this.dataService.sendMessage({ status: Status.Refesh });
                 res(e);
               });
           }
-          // this.dataService.sendMessage({ resultDelete: result });
+          this.dataService.sendMessage({ resultDelete: result });
         });
       });
     } else {
@@ -296,6 +298,7 @@ export class ApiService {
           )
           .subscribe((e) => {
             this.snackBar.openSnackBar(`Đã xóa thành công! ${id}`);
+            this.dataService.sendMessage({ status: Status.Refesh });
             res(e);
           });
       });
@@ -319,6 +322,7 @@ export class ApiService {
               )
               .subscribe((e) => {
                 this.snackBar.openSnackBar(`Đã xóa thành công! ${id}`);
+                this.dataService.sendMessage({ status: Status.Refesh });
                 res(e);
               });
           }

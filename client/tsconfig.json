@@ -4,6 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "allowJs": true, // allow js scripts usage inside the project
     "forceConsistentCasingInFileNames": false,
     "strict": true,
     "noImplicitOverride": true,

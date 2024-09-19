@@ -1,4 +1,7 @@
-<div class="xx1" *ngIf="dataSource">
+<div class="flex data-null" *ngIf="dataSource.data.length==0" >
+Không có dữ liệu
+</div>
+<div class="xx1" *ngIf="dataSource.data.length>0">
     <div class="max-height">
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
             <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -100,7 +103,7 @@
 
             <ng-container *ngIf="!showImport()">
                 <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;index as i" (click)="onRowClick(row,$event,i)"></tr>
             </ng-container>
         </table>
 

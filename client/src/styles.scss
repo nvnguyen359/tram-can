@@ -2,9 +2,26 @@
 
 // @import "primeng/resources/themes/lara-light-blue/theme.css";
 // @import "primeng/resources/primeng.css";
+:root {
+    --background: white
+}
+
 html,
 body {
     height: 100%;
+    //  background: var(--background);
+}
+
+input:hover {
+    border-color: rgb(226, 55, 248);
+}
+
+$lenght: 130;
+
+@for $i from 1 through $lenght {
+    .height-#{$i} {
+        height: #{$i}px;
+    }
 }
 
 body {
@@ -27,6 +44,10 @@ body {
     padding: 4px;
 }
 
+.padding-r4 {
+    padding-right: 4px;
+}
+
 .flex {
     display: flex;
 }
@@ -38,6 +59,9 @@ body {
     z-index: 100000;
 }
 
+.flex.start {
+    align-items: start;
+}
 
 .text-center {
     text-align: center;
@@ -50,7 +74,10 @@ body {
 .text-left {
     text-align: left;
 }
-
+app-home{
+    width: 100%;
+    height: 100%;
+}
 a {
     color: var(--mdc-filled-text-field-caret-color);
     text-transform: capitalize;
@@ -193,8 +220,8 @@ mat-form-field {
     top: 0;
 }
 
-.position-abs  mat-icon-button,
-mat-form-field  mat-icon-button{
+.position-abs mat-icon-button,
+mat-form-field mat-icon-button {
     position: absolute;
     z-index: 1;
     top: -22px;
@@ -226,9 +253,11 @@ button {
     max-height: 400px;
     overflow: auto;
 }
-.mat-mdc-table{
-    background-color: transparent!important;
+
+.mat-mdc-table {
+    background-color: transparent !important;
 }
+
 // .mat-drawer-content div .ng-star-inserted {
 //     width: 100%;
 // }
@@ -236,15 +265,19 @@ button {
 .margin-top_-18px {
     margin-top: -18px;
 }
+
 .margin-top_-16px {
     margin-top: -16px;
 }
-.margin-r4{
+
+.margin-r4 {
     margin-right: 4px;
 }
-.shadow{
+
+.shadow {
     box-shadow: var(--mdc-elevated-card-container-elevation);
 }
+
 // mat-form-field.small {
 //     --mat-form-field-container-height: 40px;
 //     --mat-form-field-container-vertical-padding: 8px;

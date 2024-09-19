@@ -18,6 +18,7 @@
       display: flex;
       width: 100%;
       flex-direction: column;
+      align-items: flex-start
     }
 
     .full-width {
@@ -33,6 +34,10 @@
     .c1 {
       font-size: 16px;
       font-weight: 400;
+    }
+
+    .table {
+      width: 100%;
     }
 
     table {
@@ -54,6 +59,10 @@
       border-bottom: 1px solid #dddddd5e;
     }
 
+    tr td:nth-child(3) {
+      padding-left: 25px
+    }
+
     .co thead th {
       font-weight: 800;
     }
@@ -69,6 +78,7 @@
     .ft {
       display: block;
       text-align: right;
+      width: 100%;
     }
 
     .hide {
@@ -79,6 +89,7 @@
       display: flex;
       flex-direction: row;
       margin-top: 12px;
+      width: 100%;
     }
 
     footer>div {
@@ -121,6 +132,12 @@
       padding-bottom: 100px;
       overflow: auto;
     }
+
+    h2 {
+      display: block;
+      width: 100%;
+      font-weight: 700;
+    }
   </style>
 </head>
 
@@ -131,12 +148,12 @@
       <div class="full-width nameCompany c1">{{DIACHI}}</div>
       <div class="full-width nameCompany c1"> {{PHONE}}</div>
     </div>
-    <h2 class="text-center" >PHIẾU CÂN</h2>
+    <h2 class="text-center">PHIẾU CÂN</h2>
     <div class="table">
       <table>
 
         <tr>
-          <td>Hàng Hóa</td>
+          <td>Mặt Hàng</td>
           <td colspan="1" class="right">{{productName}}</td>
           <td>Mã Số</td>
           <td colspan="1">{{id}}</td>

@@ -52,22 +52,23 @@
     justify-content: flex-end;
     min-width: 160px;
     border-radius: 4px;
-    padding: 0px 4px;
 
 }
 
 .number-x {
-    transition: background 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
     position: relative;
     top: 0;
     left: 0;
     width: 100%;
     cursor: pointer;
 }
-
+.number-serial{
+    transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
 .number-x:hover .number-serial:nth-child(2) {
-    background-color: rgba(44, 44, 44, 0.623);
-    color: brown;
+    background: rgba(230, 62, 40, 0.781);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .number-x:hover .lb-x {
@@ -76,11 +77,11 @@
 
 .lb-x {
     position: absolute;
-    top: 0px;
+    top: 2px;
     left: 4px;
     z-index: 10;
-    color: yellowgreen;
-    font-size: 12px;
+    color: rgb(255, 255, 255);
+    font-size: 15px;
 }
 
 .c1 {
@@ -90,6 +91,8 @@
     opacity: 0.1;
     background: transparent;
     color: beige;
+    display: flex;
+    width: 100%;
 
 }
 
@@ -101,7 +104,6 @@
 
 .bg-black {
     background-color: rgb(44, 44, 44);
-    width: 100%;
 }
 
 .time-x {
@@ -121,7 +123,7 @@ select {
 }
 
 select option {
-    color: blue;
+    color: rgb(42, 42, 43);
 }
 
 .number-x :hover select {

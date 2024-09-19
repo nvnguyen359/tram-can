@@ -1,5 +1,5 @@
 import { CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
-import { NgIf, NgFor } from '@angular/common';
+import { NgIf, NgFor, NgOptimizedImage } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -73,9 +73,9 @@ import { DisplayHtmlComponent } from './components/display-html/display-html.com
     MatChipsModule,
     MatInputModule,
     MatTooltipModule,
-    InputCustomComponent,AutocompleteComponent,ExpansionTableComponent,DisplayHtmlComponent
+    InputCustomComponent,AutocompleteComponent,ExpansionTableComponent,DisplayHtmlComponent,NgOptimizedImage,
   ],
-  exports: [MatRadioModule,MatProgressBarModule,
+  exports: [MatRadioModule,MatProgressBarModule,NgOptimizedImage,
     MatExpansionModule,
     MatDatepickerModule,
     MatNativeDateModule,

@@ -9,11 +9,14 @@ class CRUDKNEX {
     const localDatabase =
       process.env.EVN_NODE != "production"
         ? path.join(__dirname, process.env.SQLITE_FILENAME)
-        : path.join(process.env.localDatabase+'\\Local Storage', process.env.SQLITE_FILENAME);
+        : path.join(
+            process.env.localDatabase + "\\Local Storage",
+            process.env.SQLITE_FILENAME
+          );
     this.knex = require("knex")({
       client: "sqlite",
       connection: {
-        filename:`${localDatabase}.db`,
+        filename: `${localDatabase}.db`,
       },
       useNullAsDefault: true,
     });
@@ -84,24 +87,27 @@ class CRUDKNEX {
       res(result);
     });
   }
-  async findAll(obj = null) {
+  async findAll(obj = {}) {
     const {
-      query = "",
-      column,
       limit = 100,
       offset = 0,
       startDay,
       endDay,
-      name = "",
+      name,
+      query, 
+      column,
     } = obj;
+    const from = startDay?new Date(startDay).startDay().toISOString():new Date().startDay().toISOString();
+    const to = endDay?new Date(endDay).endDay().toISOString():new Date().endDay().toISOString();
+
     return new Promise(async (res, rej) => {
       const orderBy = "id";
       const wherename = name
         ? await this.knex(this.table)
-            
+
             .columns(column)
             .select()
-            .whereLike('name',`%${name}%`)
+            .whereLike("name", `%${name}%`)
             .limit(limit)
             .offset(offset)
             .orderBy(orderBy, "desc")
@@ -111,21 +117,19 @@ class CRUDKNEX {
             .limit(limit)
             .offset(offset)
             .orderBy(orderBy, "desc");
-            console.log(this.table,'name',name,wherename.length)
+
       let qr = !startDay
         ? wherename
         : await this.knex(this.table)
-            .whereBetween("createdAt", [
-              new Date(startDay).toISOString(),
-              new Date(endDay).toISOString(),
-            ])
+            .whereBetween("createdAt", [from, to])
             .columns(column)
             .select()
             .limit(limit)
             .offset(offset)
             .orderBy(orderBy, "desc");
+    //  console.log(qr);
       const result =
-        query == ""
+        !query 
           ? qr
           : !offset
           ? await this.knex.raw(
@@ -133,7 +137,7 @@ class CRUDKNEX {
                 ` limit ${limit} offset ${offset} ORDER BY ${orderBy} DESC`
             )
           : await knex.raw(query);
-          //console.log(wherename)
+      //console.log(wherename)
       this.knex(this.table)
         .count("id as CNT")
         .then((total) => {

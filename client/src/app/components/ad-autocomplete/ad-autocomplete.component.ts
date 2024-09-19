@@ -48,7 +48,8 @@ declare var removeAccents: any;
       useExisting: forwardRef(() => AdAutocompleteComponent),
       multi: true,
     },
-  ],schemas:[CUSTOM_ELEMENTS_SCHEMA]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AdAutocompleteComponent implements ControlValueAccessor {
   @Output() onSelection = new EventEmitter();
@@ -93,17 +94,12 @@ export class AdAutocompleteComponent implements ControlValueAccessor {
     if (value) {
       this.value = value;
       this.control.setValue(value);
-     
     }
-     delay(100).then(()=> this.showlab(value))
+    delay(100).then(() => this.showlab(value));
   }
 
   hidex = false;
   control = new FormControl('');
-  streets: any[] = [
-    { name: 'Champs-Élysées', value: 0 },
-    { name: 'Lombard Street', value: 0 },
-  ];
   filteredStreets: Observable<any[]> | undefined;
   @Input() options = {
     placeholder: 'placeholder',
@@ -114,12 +110,14 @@ export class AdAutocompleteComponent implements ControlValueAccessor {
     label: 'label',
     type: 'text',
   };
-  constructor() {
-    this.id=`id-${Math.floor(Math.random() * 10000) + 1}`
-  }
+  @Input() data: any[] = [];
+  array: any[] = [];
+  constructor() {}
   async ngOnInit() {
-  
-    if (this.options.data.length < 1) this.options.data = this.streets;
+    this.id = `id-${Math.floor(Math.random() * 100000) + 1}`;
+    if (this.data?.length > 0) this.array = this.data;
+    if (this.options.data?.length > 0) this.array = this.options.data;
+   // if (this.array.length < 1) this.array = this.streets;
     this.filteredStreets = this.control.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value || ''))
@@ -128,14 +126,14 @@ export class AdAutocompleteComponent implements ControlValueAccessor {
     const input = document.getElementById(this.id);
     if (input) {
       input.addEventListener('click', () => {
-       this.showlab(input.textContent)
+        this.showlab(input.textContent);
       });
     }
   }
 
   private _filter(value: string): string[] {
     const filterValue = this._normalizeValue(value);
-    return this.options.data.filter((street) =>
+    return this.array.filter((street) =>
       this._normalizeValue(street[this.options.display]).includes(filterValue)
     );
   }
@@ -171,5 +169,6 @@ export class AdAutocompleteComponent implements ControlValueAccessor {
     this.hidex = false;
     this.value = '';
     //  this.writeValue(this.control.value);
+    this.showlab(this.value);
   }
 }
