@@ -15,6 +15,8 @@ Date.prototype.startDay = function () {
 Date.prototype.endDay = function () {
   return new Date(this.setHours(23, 59, 59, 999));
 };
+
+
 function isEqualObj(obj,obj1) {
   let result = true;
   const objArr = Object.keys(obj);

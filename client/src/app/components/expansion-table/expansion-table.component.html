@@ -1,11 +1,12 @@
-<div class="flex data-null" *ngIf="dataSource.data.length==0" >
-Không có dữ liệu
+<div class="flex data-null" *ngIf="dataSource.data.length==0">
+    Không có dữ liệu
 </div>
 <div class="xx1" *ngIf="dataSource.data.length>0">
     <div class="max-height">
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
             <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
-                <th mat-header-cell *matHeaderCellDef [class]="thTextAligh(column)" mat-sort-header>
+                <th mat-header-cell *matHeaderCellDef [class]="thTextAligh(column)" mat-sort-header matTooltip="{{columnOrders(column,true)}}" matTooltipPosition="left"
+                    style="font-size: 12px;background:rgba(179, 177, 177, 0.514)">
                     <div [ngSwitch]="column">
                         <div *ngSwitchCase="'no'" class="flex" style="align-items: center;">
                             {{columnOrders(column)}}
@@ -103,25 +104,26 @@ Không có dữ liệu
 
             <ng-container *ngIf="!showImport()">
                 <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;index as i" (click)="onRowClick(row,$event,i)"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;index as i"
+                    (click)="onRowClick(row,$event,i)"></tr>
             </ng-container>
         </table>
 
     </div>
-    <div class="flex center" style="justify-content: flex-end;" >
+    <div class="flex center" style="justify-content: flex-end;">
         <div *ngIf="options.isShowBt">
-            <button *ngIf="url!='inventory'" class="{{ngDisabled()}}" mat-flat-button color="primary" (click)="onUpdates()"
-            style="margin-right: 8px;">Cập Nhật
-            &nbsp;<mat-icon>update</mat-icon></button>
-        <button *ngIf="url!='inventory'" class="{{ngDisabled()}}" mat-flat-button color="accent"
-            (click)="onbulkDelete()">Xóa
-            &nbsp;<mat-icon>delete</mat-icon></button>
+            <button *ngIf="url!='inventory'" class="{{ngDisabled()}}" mat-flat-button color="primary"
+                (click)="onUpdates()" style="margin-right: 8px;">Cập Nhật
+                &nbsp;<mat-icon>update</mat-icon></button>
+            <button *ngIf="url!='inventory'" class="{{ngDisabled()}}" mat-flat-button color="accent"
+                (click)="onbulkDelete()">Xóa
+                &nbsp;<mat-icon>delete</mat-icon></button>
         </div>
-       <div >
-        <mat-paginator [length]="resultsLength" [pageSize]="pageSize" (page)="getServerData($event)" style="width: 100%;"
-        [pageSizeOptions]="[pageSize,10, 25, 100,1000,5000]" showFirstLastButtons="true">
-    </mat-paginator>
-       </div>
+        <div>
+            <mat-paginator [length]="resultsLength" [pageSize]="pageSize" (page)="getServerData($event)"
+                style="width: 100%;" [pageSizeOptions]="[pageSize,10, 25, 100,1000,5000]" showFirstLastButtons="true">
+            </mat-paginator>
+        </div>
     </div>
     <!-- <div class="fixed bottom">
         <button mat-fab color="warn" aria-label="Example icon button with a home icon" (click)="onCreate()">

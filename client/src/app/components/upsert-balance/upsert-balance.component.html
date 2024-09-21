@@ -2,7 +2,7 @@
     <div class="flex  full-width" style="height: 100%;">
         <mat-card style="margin-right: 4px;">
             <mat-card-content>
-                <div class="flex column group  padding-4 " style="width:250px">
+                <div class="flex column group  padding-4 " style="width:245px">
                     <app-display-number style="width: 100%;margin-bottom:8px"
                         [inputObj]="inputBanCan"></app-display-number>
 
@@ -73,11 +73,11 @@
                         <textarea matInput formControlName="note"></textarea>
                     </mat-form-field>
                     <div class="button-row">
-                        <button mat-flat-button type="submit" color="primary" [disabled]="!form.valid"
+                        <button mat-flat-button type="submit" matTooltip="phím tắt: CTRL+S" matTooltipPosition="above" id="btnsave" color="primary" [disabled]="!form.valid"
                             class="margin-r4">Lưu
                             <mat-icon>save</mat-icon></button>
-                        <button mat-flat-button type="button" color="primary" [disabled]="!form.valid" (click)="onPrinter()"
-                            class="margin-r4">In<mat-icon>print</mat-icon></button>
+                        <button mat-flat-button id="printer" matTooltip="phím tắt: CTRL+P" matTooltipPosition="above" type="button" color="primary" [disabled]="!form.valid" (click)="onPrinter()"
+                            class="margin-r4 ">In<mat-icon>print</mat-icon></button>
                         <button mat-flat-button color="warn" type="button" [disabled]="!form.valid"
                             (click)="onDelete()">Xóa<mat-icon>close</mat-icon></button>
 
@@ -113,7 +113,7 @@
                         </div>
                     </div>
                     <div class="flex row">
-                        <app-expansion-table [options]="optionsTable"
+                        <app-expansion-table [options]="optionsTable" [condistion]="condistionTable"
                             (eventUpsert)="eventUpsertTable($event)"></app-expansion-table>
                     </div>
                 </div>

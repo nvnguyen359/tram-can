@@ -64,7 +64,14 @@ io.on("connection", async (socket) => {
   //  // io.emit("message", data.toString("utf8"));
   // });
 });
+const localtunnel = require('localtunnel');
+const tunnel = localtunnel(port, { subdomain: 'dev'} ,(err, tunnel) => {
+console.log(err,tunnel);
+}); 
 
+tunnel.on('close', function() { 
+  // When the tunnel is closed
+});
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });

@@ -92,8 +92,10 @@ export class ExpansionTableComponent {
     url: '',
     displayedColumns: [],
     pageSize: 5,
-    isShowBt:false
+    isShowBt: false,
   };
+
+  @Input() condistion:any;
   @Output() eventDelete = new EventEmitter();
   @Output() eventUpsert = new EventEmitter();
   displayedColumns: string[] = [];
@@ -115,6 +117,7 @@ export class ExpansionTableComponent {
   details: any[] = [];
   dataResult: any;
   url: any;
+
   constructor(
     private service: ApiService,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -188,7 +191,7 @@ export class ExpansionTableComponent {
       this.options.url = this.router.url.replace('/', '').trim();
     }
     this.service
-      .get(this.options.url, { page: pageIndex, pageSize })
+      .get(this.options.url, { page: pageIndex, pageSize,...this.condistion })
       .then((data: any) => {
         if (data.count < 1) {
           this.dataSource.data = [];
@@ -291,17 +294,19 @@ export class ExpansionTableComponent {
     // console.log(result1);
     this.eventUpsert.emit(result1);
   }
-  onRowClick(item: any,event:any,index:any) {
+  onRowClick(item: any, event: any, index: any) {
     this.eventUpsert.emit(item);
-    const rows= document.querySelectorAll('.mat-mdc-row');
-    rows.forEach((e:any)=>e.classList.remove('active'));
-    (event.target as HTMLElement).closest('.mat-mdc-row')?.classList.add('active')
+    const rows = document.querySelectorAll('.mat-mdc-row');
+    rows.forEach((e: any) => e.classList.remove('active'));
+    (event.target as HTMLElement)
+      .closest('.mat-mdc-row')
+      ?.classList.add('active');
     event.preventDefault();
     //event.stopPropagation();
   }
   onCreate() {}
   //******************************************** */
-  columnOrders(key: any) {
+  columnOrders(key: any,isTooltip=false) {
     const columnsToDisplay = [
       { key: 'no', value: '#' },
       { key: 'name', value: 'Tên' },
@@ -316,6 +321,7 @@ export class ExpansionTableComponent {
       { key: 'updatedAt', value: 'Ngày' },
       { key: 'customerName', value: 'Khách Hàng' },
       { key: 'price', value: 'Gía Bán' },
+      { key: 'tare', value: 'TCTB' ,tooltip:'Tạp Chất hoặc trừ Bì'},
       { key: 'importPrice', value: 'Gía Nhập' },
       { key: 'unit', value: 'Đơn Vị' },
       { key: 'no', value: '#' },
@@ -344,12 +350,12 @@ export class ExpansionTableComponent {
       { key: 'impurities', value: 'Tạp Chất(%)' },
       { key: 'carNumber', value: 'Số Xe' },
       { key: 'type', value: 'Loại Hàng' },
-      { key: 'ieGoods', value: 'Kiểu' },
+      { key: 'ieGoods', value: 'Xuất/Nhập Hàng' },
       { key: 'productName', value: 'Tên Hàng' },
       { key: 'customertName', value: 'Khách Hàng' },
       { key: 'id', value: 'ID' },
     ];
-    const name = columnsToDisplay.find((x: any) => x.key == key)?.value;
+    let name =!isTooltip? columnsToDisplay.find((x: any) => x.key == key)?.value:columnsToDisplay.find((x: any) => x.key == key)?.tooltip;
     return name;
   }
   formatValue(value: any, column = '') {

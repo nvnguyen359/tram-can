@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, HostListener } from '@angular/core';
 import { ImportsModule } from 'src/app/imports';
 import { DisplayNumberComponent } from '../display-number/display-number.component';
 import { AdAutocompleteComponent } from '../ad-autocomplete/ad-autocomplete.component';
@@ -13,6 +13,7 @@ import { DisplayHtmlComponent } from '../display-html/display-html.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { environment } from 'src/app/environment';
+
 declare var createElements: any;
 @Component({
   selector: 'app-upsert-balance',
@@ -55,11 +56,10 @@ export class UpsertBalanceComponent {
       'weight1',
       'weight2',
       'cargoVolume',
-      'tage',
+      'tare',
       'price',
       'numberOfContainers',
       'ieGoods',
-      'updatedAt',
     ],
     pageSize: 100,
     isShowBt: false,
@@ -114,6 +114,23 @@ export class UpsertBalanceComponent {
   rawHtml = '';
   indexDisplay = 0;
   valuesClickRow: any;
+  condistionTable: any;
+  @HostListener('window:keydown.control.p', ['$event'])
+  bigFont(event: KeyboardEvent) {
+    event.preventDefault();
+    const el = document.getElementById('printer') as HTMLElement;
+    if (el) {
+      el.click();
+    }
+  }
+  @HostListener('window:keydown.control.s', ['$event'])
+  save(event: KeyboardEvent) {
+    event.preventDefault();
+    const el = document.getElementById('btnsave') as HTMLElement;
+    if (el) {
+      el.click();
+    }
+  }
   constructor(
     private fb: FormBuilder,
     private service: ApiService,
@@ -129,6 +146,11 @@ export class UpsertBalanceComponent {
     this.getTapchats();
     this.receiveMessage();
     this.init();
+    this.condistionTable = {
+      startDay: new Date(),
+      endDay: new Date(),
+      
+    };
   }
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
@@ -263,14 +285,16 @@ export class UpsertBalanceComponent {
   }
   async onPrinter() {
     const rawHtml = await this.renderHtml();
-    const print = getItem('print') ;
+    const print = getItem('print');
     if (print) {
       const printerName = print.printer.name;
       const pageSize = print.page.value;
       //console.log(printerName, rawHtml, pageSize )
-      this.service.update('print-html', { printerName, rawHtml, pageSize }).then((e:any)=>{
-        console.log(e)
-      });
+      this.service
+        .update('print-html', { printerName, rawHtml, pageSize })
+        .then((e: any) => {
+          console.log(e);
+        });
     }
   }
   onChangeDisplayNumber(event: any, case1: any = 1) {
@@ -311,8 +335,8 @@ export class UpsertBalanceComponent {
     }
   }
   getWeighStations() {
-    this.service.get(this.pathApi).then((e: any) => {
-      console.log(e);
+    const params = { startDay: new Date(), endDay: new Date(), column: ['id'] };
+    this.service.get(this.pathApi, params).then((e: any) => {
       this.data = e.items;
       this.carNumbers = [
         ...new Set(Array.from(this.data).map((x) => x['carNumber'])),
@@ -407,14 +431,16 @@ export class UpsertBalanceComponent {
     t.TENCONGTY = company.name;
     t.DIACHI = company.address;
     t.PHONE = company.phone;
-    t.BANGCHU = 'bang chu';
+   
     t.id = data.id;
+
     t.carNumber = data.carNumber;
     t.weight1 = minmax.max.toLocaleString('vi-VN');
     t.weight2 = minmax.min.toLocaleString('vi-VN');
     t.productName = data.productName;
     t.PAGESIZE = item.page.value == '210mm' ? 'a4' : 'a5';
     t.cargoVolume = t.cargoVolume.toLocaleString('vi-VN');
+  
     //console.log(t.updatedAt,new Date(t.updatedAt).toLocaleTimeString())
     t.createdAt1 = minmax.isMax
       ? new Date(t.createdAt).toLocaleString('vi-VN')
@@ -427,7 +453,12 @@ export class UpsertBalanceComponent {
     if (t.tareKg == null) {
       t.tareKg = 0;
     }
-    t.payVolume = (t.cargoVolume - t.tareKg).toLocaleString('vi-VN');
+    t.payVolume = t.actualVolume.toLocaleString('vi-VN');
+    if(data.price){
+      t.BANGCHU = '1000.convertMoneyIntoWords()';
+     
+    }
+ 
     const keys = Object.keys(t);
     const t1 = t as any;
     for (let index = 0; index < keys.length; index++) {
@@ -466,17 +497,17 @@ export class UpsertBalanceComponent {
   }
   exportCsv() {
     const pathUrl = `${environment.baseUrl}/downloadExcel`;
-    var a = document.createElement("a");
-      a.href =pathUrl;
-      a.download = 'ok.csv';
-      // start download
-      a.click();
+    var a = document.createElement('a');
+    a.href = pathUrl;
+    a.download = 'ok.csv';
+    // start download
+    a.click();
   }
-  pathDownload=`${environment.baseUrl}/downloadExcel`
+  pathDownload = `${environment.baseUrl}/downloadExcel`;
   //#endregion
-  
 }
 
 function onlyUnique(value: any, index: number, array: any[]): value is any {
   return array.indexOf(value) === index;
 }
+

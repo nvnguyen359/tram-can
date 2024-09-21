@@ -30,5 +30,6 @@ export interface WeighStation {
     NGAY:any;
     payVolume:any,
     createdAt1: any
-    updatedAt1: any
+    updatedAt1: any,
+    actualVolume:any
   }

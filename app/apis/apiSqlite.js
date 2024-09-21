@@ -180,15 +180,22 @@ const create = (element, app, crud) => {
 const findAll = (element, app, crud) => {
   app.get(`/api/${element}`, async (req, res, next) => {
     const q = req.query;
+    //console.log(q)
     const column = q.columns ? q.columns.split(",") : [];
     const limit = parseInt(q.pageSize) || parseInt(q.limit) || 100;
     const offset = parseInt(q.page) || 0;
+    const startDay = q.startDay;
+    const endDay = q.endDay;
+    const search =q.search? JSON.parse(q.search):undefined;
+    
     const obj = {
       query: q.query,
       column,
       limit,
       offset: offset * limit,
-      name: q.name,
+      startDay,
+      endDay,
+      search,
     };
     if (element == "product") {
       const getInventory = await calInventory();

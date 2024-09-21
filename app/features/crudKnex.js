@@ -93,55 +93,79 @@ class CRUDKNEX {
       offset = 0,
       startDay,
       endDay,
-      name,
-      query, 
+      query,
       column,
+      search,
     } = obj;
-    const from = startDay?new Date(startDay).startDay().toISOString():new Date().startDay().toISOString();
-    const to = endDay?new Date(endDay).endDay().toISOString():new Date().endDay().toISOString();
+    let whe = "";
+    const dateAt = "createdAt";
+    const orderBy = "id";
+    // if (search && Object.keys(search)) {
+    //   const entries = Object.entries(search);
+    //   for (let i = 0; i < entries.length; i++) {
+    //     const x = entries[i];
+    //     whe += `${x[0]} LIKE ${x[1]}%`;
+    //     if ( i==0&& i < entries.length) {
+    //       whe += " OR ";
+    //     }
+    //   }
+    //   if(startDay){
+    //     const from = new Date(startDay).startDay().toISOString();
+    //     whe+=` AND ${dateAt}>=${from}`
+    //   }
+    //   if(endDay){
+    //     const from = new Date(endDay).endDay().toISOString();
+    //     whe+=` AND ${dateAt}<=${from}`
+    //   }
+    // }
+
+    let result;
+
+    if (query) {
+      if (offset) {
+        query += ` limit ${limit} offset ${offset} ORDER BY ${orderBy} DESC`;
+      }
+      result = await knex.raw(query);
+    } else {
+      result = this.knex(this.table).select();
+      if (column) {
+        result = result.column(column);
+      }
+
+      if (search && Object.keys(search)) {
+        const entries = Object.entries(search);
+        for (let i = 0; i < entries.length; i++) {
+          const x = entries[i];
+          if (i == 0) {
+            result = result.where(x[0], "LIKE", `%${x[1]}`);
+          } else {
+            result = result.orWhere(x[0], "LIKE", `%${x[1]}`);
+          }
+        }
+      }
+      if (startDay) {
+        const from = new Date(startDay).startDay().toISOString();
+        result = result.where(dateAt, ">=", from);
+      }
+      if (endDay) {
+        const to = new Date(endDay).endDay().toISOString();
+        result = result.where(dateAt, "<=", to);
+      }
+      // console.log((await result).length);
+      result = result
+        
+        .limit(limit)
+        .offset(offset)
+        .orderBy(orderBy, "desc");
+      console.log(result.toString());
+    }
 
     return new Promise(async (res, rej) => {
-      const orderBy = "id";
-      const wherename = name
-        ? await this.knex(this.table)
-
-            .columns(column)
-            .select()
-            .whereLike("name", `%${name}%`)
-            .limit(limit)
-            .offset(offset)
-            .orderBy(orderBy, "desc")
-        : await this.knex(this.table)
-            .columns(column)
-            .select()
-            .limit(limit)
-            .offset(offset)
-            .orderBy(orderBy, "desc");
-
-      let qr = !startDay
-        ? wherename
-        : await this.knex(this.table)
-            .whereBetween("createdAt", [from, to])
-            .columns(column)
-            .select()
-            .limit(limit)
-            .offset(offset)
-            .orderBy(orderBy, "desc");
-    //  console.log(qr);
-      const result =
-        !query 
-          ? qr
-          : !offset
-          ? await this.knex.raw(
-              query +
-                ` limit ${limit} offset ${offset} ORDER BY ${orderBy} DESC`
-            )
-          : await knex.raw(query);
       //console.log(wherename)
       this.knex(this.table)
         .count("id as CNT")
-        .then((total) => {
-          res({ items: result, count: total[0].CNT });
+        .then(async (total) => {
+          res({ items: await result, count: total[0].CNT });
         });
     });
   }

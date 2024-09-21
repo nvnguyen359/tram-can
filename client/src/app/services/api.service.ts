@@ -37,7 +37,7 @@ export class ApiService {
       // The response body may contain clues as to what went wrong.
       //
 
-    //  this.snackBar.openSnackBar(`${error.message}`);
+      //  this.snackBar.openSnackBar(`${error.message}`);
       console.error(
         `Backend returned code ${error.message}, body was: `,
         error.error
@@ -104,10 +104,14 @@ export class ApiService {
     if (params) {
       const entries = Object.entries(params);
       entries.forEach((x: any) => {
-        pas += `${x[0]}=${x[1]}&`;
+        if (Object.keys(x[1]).length > 0) {
+          pas += `${x[0]}=${JSON.stringify(x[1])}&`;
+        } else {
+          pas += `${x[0]}=${x[1]}&`;
+        }
       });
     }
-
+    console.log(pas);
     const pathUrl = `${this.baseServer}/${url}?${pas}`;
     return new Promise((res, rej) => {
       this.http
