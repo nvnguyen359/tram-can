@@ -180,7 +180,7 @@ const create = (element, app, crud) => {
 const findAll = (element, app, crud) => {
   app.get(`/api/${element}`, async (req, res, next) => {
     const q = req.query;
-    //console.log(q)
+    console.log('findAll',q)
     const column = q.columns ? q.columns.split(",") : [];
     const limit = parseInt(q.pageSize) || parseInt(q.limit) || 100;
     const offset = parseInt(q.page) || 0;

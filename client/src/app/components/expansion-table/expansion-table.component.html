@@ -2,10 +2,11 @@
     Không có dữ liệu
 </div>
 <div class="xx1" *ngIf="dataSource.data.length>0">
-    <div class="max-height">
+    <div class="example-container max-height">
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
             <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
-                <th mat-header-cell *matHeaderCellDef [class]="thTextAligh(column)" mat-sort-header matTooltip="{{columnOrders(column,true)}}" matTooltipPosition="left"
+                <th mat-header-cell *matHeaderCellDef [class]="thTextAligh(column)" mat-sort-header
+                    matTooltip="{{columnOrders(column,true)}}" matTooltipPosition="left"
                     style="font-size: 12px;background:rgba(179, 177, 177, 0.514)">
                     <div [ngSwitch]="column">
                         <div *ngSwitchCase="'no'" class="flex" style="align-items: center;">
@@ -45,7 +46,6 @@
 
                             <div *ngSwitchDefault>
                                 <div class="full-width flex center" style="width: 100%;">
-
                                     <div [innerHTML]="formatValue(element[column],column)"></div>
                                 </div>
                                 <button *ngIf="column=='email'" mat-icon-button color="accent"
@@ -56,6 +56,7 @@
 
                     </div>
                 </td>
+                
             </ng-container>
 
             <ng-container *ngIf="showImport() ">
@@ -94,19 +95,22 @@
                     </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand;sticky: true"></tr>
+
                 <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"
                     [class.example-expanded-row]="expandedElement === element"
                     (click)="expandedElement = expandedElement === element ? null : element">
                 </tr>
                 <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
             </ng-container>
 
             <ng-container *ngIf="!showImport()">
                 <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;index as i"
                     (click)="onRowClick(row,$event,i)"></tr>
+
             </ng-container>
+           
         </table>
 
     </div>
@@ -119,6 +123,8 @@
                 (click)="onbulkDelete()">Xóa
                 &nbsp;<mat-icon>delete</mat-icon></button>
         </div>
+        <div><a  [routerLink]="['/settings']" rnkActive="router-link-activeouterLi" style="cursor: pointer;">Xem chi tiết báo cáo</a>
+            </div>
         <div>
             <mat-paginator [length]="resultsLength" [pageSize]="pageSize" (page)="getServerData($event)"
                 style="width: 100%;" [pageSizeOptions]="[pageSize,10, 25, 100,1000,5000]" showFirstLastButtons="true">

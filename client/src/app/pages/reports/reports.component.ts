@@ -11,13 +11,15 @@ import {
   getStartEndMonthInQuarter,
   getStarEndDateInQuarter,
   typeChart,
+  radioGroup,
+  Status,
 } from 'src/app/general';
 import { ApiService } from 'src/app/services/api.service';
 import { DataService } from 'src/app/services/data.service';
 import { Details } from 'src/app/services/print-html.service';
 
 @Component({
-  selector: 'app-reports',
+  selector: 'ad-reports',
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss'],
 })
@@ -33,28 +35,59 @@ export class ReportsComponent {
   tongDoanhThu: number = 0;
   tongChietKhau: number = 0;
   filterOrder: any;
-  overviews: any[] = [
-    { title: 'Đơn hàng', sum: 0 },
-    { title: 'Doanh Thu', sum: 0 },
-    { title: 'Chiết Khấu', sum: 0 },
-    { title: 'Lợi Nhuận', sum: 0 },
-  ];
   chitiets: any[] = [];
   filterChiTiets: any[] = [];
   range = new FormGroup({
-    start: new FormControl<Date | null>(null), 
+    start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
 
   title = `Ngày ${new Date().toLocaleDateString('vi')}`;
-  optionsChart: any | undefined;
+  optionsTable: any = {
+    url: 'weighStation',
+    displayedColumnsChild: [
+      'no',
+      'customerName',
+      'productName',
+      'weight1',
+      'weight2',
+      'cargoVolume',
+      'tare',
+      'price',
+      'numberOfContainers',
+    ],
+    isShowBt: false,
+    displayedColumns: [
+      'createdAt',
+      'weight1',
+      'weight2',
+      'cargoVolume',
+      'actualVolume',
+      'pay',
+      'payment',
+    ],
+    condition: { search: { ieGoods: 'Xuất Hàng' } },
+  };
+  groupIEGoods = radioGroup;
+  condition: any = { search: { ieGoods: 'Xuất Hàng' } };
+  activeLink = '';
   constructor(private service: ApiService, private dataService: DataService) {
     const date = firstLastDate();
     this.firstDay = date.firstDate;
     this.lastDay = date.lastDate;
     this.title = `Ngày ${new Date().toLocaleDateString('vi')}`;
   }
-  async ngOnInit() {}
+  async ngOnInit() {
+    //console.log(radioGroup);
+  }
+
+  onClickTab(ieGoods: any) {
+    //this.condition = {search:{ ieGoods }};
+    //console.log(ieGoods,this.condition)
+    const obj = { status: Status.Add, ieGoods };
+    this.dataService.sendMessage(obj);
+  }
+  eventUpsertTable(event: any) {}
   //#region all
   getMonths() {
     for (let i = 1; i < 13; i++) {
@@ -72,33 +105,7 @@ export class ReportsComponent {
     }
   }
   //#endregion
-  getDonhangs(obj: any = null) {
-    let today;
-    if (localStorage.getItem('filter')) {
-      const today1 = JSON.parse(localStorage.getItem('filter') + '');
-      this.firstDay = new Date(today1.firstDay);
-      this.lastDay = new Date(today1.lastDay);
-      if (localStorage.getItem('reportTitle')) {
-        this.title = localStorage.getItem('reportTitle') + '';
-      }
-    } else {
-      this.firstDay = new Date();
-      this.lastDay = new Date();
-      this.title = `Ngày ${this.firstDay.toLocaleDateString('vi')}`;
-    }
-    if (!obj)
-      obj = {
-        pageSize: 100000,
-        page: 0,
-        startDay: this.firstDay,
-        endDay: this.lastDay,
-      };
-    this.service.get(BaseApiUrl.Orders, obj).then((e: any) => {
-      this.donhangs = e.items;
-      console.log(this.donhangs);
-      this.filterOrders();
-    });
-  }
+
   //#region onClosedMenu
   onClosedMenu(event: any = null) {
     const now = new Date();
@@ -168,134 +175,11 @@ export class ReportsComponent {
       'filter',
       JSON.stringify({ firstDay: this.firstDay, lastDay: this.lastDay })
     );
-    this.getDonhangs(obj);
-    this.filterOrders();
   }
   //#endregion onClosedMenu
 
   //#region filterOrders
-  filterOrders() {
-    //  console.log(this.donhangs)
-    if (!this.donhangs) return;
-    this.overviews = [];
-    this.filterOrder = Array.from(this.donhangs as any).filter((x: any) => {
-      return x.status != 'Đã Hủy';
-    });
 
-    this.dataService.sendMessage({ filterOrder: this.filterOrder });
-    const tongDon = Array.from(this.filterOrder).length;
-    const tongDoanhThu = Array.from(this.filterOrder)
-      .map((x: any) => parseInt(x['pay']))
-      .reduce((a: number, b: number) => a + b, 0);
-    const tiencong = Array.from(this.filterOrder)
-      .map((x: any) => parseInt(x['wage']))
-      .reduce((a: number, b: number) => a + b, 0);
-    const tongChietKhau = Array.from(this.filterOrder)
-      .map((x: any) => (x['discount'] ? parseInt(x['discount']) : 0))
-      .reduce((a: number, b: number) => a + b, 0);
-    this.overviews.push({ title: 'Đơn Hàng', sum: tongDon });
-    this.overviews.push({ title: 'Doanh Thu', sum: tongDoanhThu });
-    this.overviews.push({ title: 'Chiết Khấu', sum: tongChietKhau });
-    this.chitiets = this.filterOrder.map((x: any) => x['details']).flat();
-    this.filterChiTiets = Array.from(this.chitiets);
-    const xxs = [...this.filterChiTiets];
-    let donutData: any[] = [];
-    this.filterChiTiets.forEach((a: any) => {
-      const y = xxs
-        .filter((f: any) => f.name == a.name)
-        .map((f: any) => parseInt(f.quantity))
-        .reduce((a: number, b: number) => a + b, 0);
-      const item = {
-        x: a.name,
-        y,
-      };
-      donutData.push(item);
-    });
-
-    this.optionsChart = {
-      type: typeChart.Doughnut,
-      data: donutData,
-    };
-    this.dataService.sendMessage({ chart: this.optionsChart });
-    this.dataService.sendMessage({
-      donut: this.filterChiTiets,
-      title: this.title,
-      donhangs: this.filterOrder,
-      chitiets: this.chitiets,
-    });
-
-    const ttChiTiet = Array.from(this.filterChiTiets)
-      .map((x: any) => {
-        if (!x.quantity) x.quantity = '0';
-        if (!x.importPrice) x.importPrice = '0';
-        return parseInt(x.quantity) * parseInt(x.importPrice);
-      })
-      .reduce((a: number, b: number) => a + b, 0);
-    // console.log(tongDoanhThu ,tongChietKhau , ttChiTiet , tiencong,tongDoanhThu - tongChietKhau - ttChiTiet + tiencong)
-    this.overviews.push({
-      title: 'Lợi Nhuận',
-      sum: tongDoanhThu - tongChietKhau - ttChiTiet + tiencong,
-    });
-    this.convertDataProduct();
-    this.createChartOrder();
-  }
-  convertDataProduct() {
-    const ttChiTiet = Array.from(this.filterChiTiets).map((x: any) => {
-      if (!x.quantity) x.quantity = 0;
-      if (!x.importPrice) x.importPrice = 0;
-      return x;
-    });
-    // console.log(ttChiTiet)
-    const names = [...new Set(ttChiTiet.map((x: any) => x.name))];
-    //console.log(names)
-    let data = [];
-    for (let index = 0; index < names.length; index++) {
-      const name = names[index];
-      const filters = ttChiTiet.filter((x: any) => x.name == name);
-      const count = filters
-        .map((x: any) => x.quantity)
-        .reduce((a: any, b: any) => a + b, 0);
-      const sumImportPrices = filters
-        .map((x: any) => parseInt(x.importPrice) * parseInt(x.quantity))
-        .reduce((a: any, b: any) => a + b, 0);
-      const sumProfit = filters
-        .map(
-          (x: any) =>
-            (parseInt(x.price) - parseInt(x.importPrice)) * parseInt(x.quantity)
-        )
-        .reduce((a: any, b: any) => a + b, 0);
-      const item = {
-        name,
-        count,
-        sumImportPrices,
-        sumProfit,
-      };
-      data.push(item);
-    }
-    //console.log(data);
-  }
-  createChartOrder() {
-    const ttChiTiet = Array.from(this.filterChiTiets).map((x: any) => {
-      if (!x.quantity) x.quantity = 0;
-      if (!x.importPrice) x.importPrice = 0;
-      return x;
-    });
-    const orders = this.filterOrder.map((x: any) => {
-      x.createdAt = new Date(x.createdAt).toLocaleDateString('vi');
-      return x;
-    });
-    const dates = [...new Set(orders.map((x: any) => x.createdAt))];
-    // console.log(dates);
-    let data = [];
-    for (let index = 0; index < dates.length; index++) {
-      const date = dates[index];
-      const filter = Array.from(orders).filter((x: any) => x.createdAt == date);
-      const count = filter.length;
-      const discounts = filter
-        .map((x: any) => x.discount)
-        .reduce((a: any, b: any) => a + b, 0);
-    }
-  }
   //#endregion
   onRangeDate(start: any, event: any) {
     if (start == 'start') {
@@ -313,8 +197,5 @@ export class ReportsComponent {
       startDay: this.firstDay,
       endDay: this.lastDay,
     };
-
-    this.getDonhangs(obj);
-    this.filterOrders();
   }
 }

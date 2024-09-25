@@ -28,11 +28,11 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { StatusComponent } from '../status/status.component';
-import { BaseApiUrl, Status, groupItem } from 'src/app/general';
+import { BaseApiUrl, Status, adcolumnsToDisplay, groupItem } from 'src/app/general';
 import { ApiService } from 'src/app/services/api.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DataService } from 'src/app/services/data.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { GroupItems } from './groupItems';
@@ -44,6 +44,7 @@ import {
   transition,
   animate,
 } from '@angular/animations';
+import { GroupITable } from './groupTable';
 
 @Component({
   selector: 'app-expansion-table',
@@ -82,7 +83,7 @@ import {
     StatusComponent,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatTooltipModule,
+    MatTooltipModule,RouterModule
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -91,11 +92,12 @@ export class ExpansionTableComponent {
   @Input() options: any = {
     url: '',
     displayedColumns: [],
-    pageSize: 5,
+    pageSize: 15,
     isShowBt: false,
+    displayedColumnGroup:[]
   };
 
-  @Input() condistion:any;
+  @Input() condistion: any;
   @Output() eventDelete = new EventEmitter();
   @Output() eventUpsert = new EventEmitter();
   displayedColumns: string[] = [];
@@ -149,27 +151,44 @@ export class ExpansionTableComponent {
   ngDisabled() {
     return this.selection.selected.length < 1 ? 'disabled' : '';
   }
-  createTable(data: any, name = '') {
+  adfilter(data: any, searchTerm: any) {
+    return data.filter((freight: any) => {
+      let search = searchTerm.removeAccents();
+      var values = Object.values(freight).filter((x) => x != null);
+      var flag = false;
+      values.forEach((val: any) => {
+        if (`${val}`.removeAccents().indexOf(search) > -1) {
+          flag = true;
+          return;
+        }
+      });
+      if (flag) return freight;
+    });
+  }
+  createTable(data: any, searchTerm = '') {
     const oldData = data;
     this.selection.clear();
     const pageIndex = this.pageEvent?.pageIndex || 0;
     const pageSize = this.pageEvent?.pageSize || this.pageSize;
+
     const filter =
-      name == ''
-        ? oldData.items
-        : data.items.filter((x: any) =>
-            `${x.name}`
-              .toLowerCase()
-              .removeAccents()
-              .includes(name.toLowerCase().removeAccents())
-          );
+      searchTerm == '' ? oldData.items : this.adfilter(data.items, searchTerm);
+
     this.details = filter;
-    if (this.options.multi) {
+    // this.dataSource.filter = name.toLowerCase().removeAccents();
+
+    // if (this.dataSource.paginator) {
+    //   this.dataSource.paginator.firstPage();
+    // }
+    //['createdAt','weight1','weight2','cargoVolume','actualVolume','pay','payment']
+    if (this.options.multi||this.options.displayedColumnGroup) {
+      console.log('ok')
       if (data.count > 0) {
-        const groupItems = new GroupItems(filter);
-        const x = groupItems.groupItems;
-        this.details = x?.items || [];
-        this.displayedColumns = x?.columns;
+        const groupItems =  new GroupITable(filter,this.options.displayedColumnGroup);
+        const x = groupItems.customData as any;
+        console.log(x)
+        this.details = x['details']||[] ;
+        this.displayedColumns = this.options.displayedColumnGroup;
         this.columnsChild = [...this.options.displayedColumns];
       }
     } else {
@@ -191,8 +210,9 @@ export class ExpansionTableComponent {
       this.options.url = this.router.url.replace('/', '').trim();
     }
     this.service
-      .get(this.options.url, { page: pageIndex, pageSize,...this.condistion })
+      .get(this.options.url, { page: pageIndex, pageSize, ...this.condistion })
       .then((data: any) => {
+        console.log(data)
         if (data.count < 1) {
           this.dataSource.data = [];
           this.changeDetectorRefs.detectChanges();
@@ -200,10 +220,11 @@ export class ExpansionTableComponent {
         }
         this.dataResult = data;
         this.details = data.items;
-        if (this.options.multi) {
-          const groupItems = new GroupItems(data.items);
-          const x = groupItems.groupItems;
-          this.displayedColumns = x?.columns;
+        if (this.options.displayedColumnGroup) {
+          const groupItems = new GroupITable(data.items,this.options.displayedColumnGroup);
+          const x = groupItems.customData;
+          console.log(x)
+          this.displayedColumns = this.options.displayedColumnGroup;
           // this.options.displayedColumns.pop();
 
           this.columnsChild = [...this.options.displayedColumns];
@@ -211,17 +232,18 @@ export class ExpansionTableComponent {
             ...this.displayedColumns,
             'expand',
           ];
-          this.details = x.items;
+   
         } else {
           this.columnsChild = [...this.options.displayedColumns];
         }
+ 
         const items = Array.from(this.details).map((x: any, index: any) => {
           x.no = index + 1 + pageIndex * pageSize;
           return x;
         });
 
         this.resultsLength = data.count;
-        this.dataSource.data = items;
+        this.dataSource.data =items;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
@@ -306,56 +328,11 @@ export class ExpansionTableComponent {
   }
   onCreate() {}
   //******************************************** */
-  columnOrders(key: any,isTooltip=false) {
-    const columnsToDisplay = [
-      { key: 'no', value: '#' },
-      { key: 'name', value: 'Tên' },
-      { key: 'status', value: 'Trạng Thái' },
-      { key: 'wage', value: 'Tiền Công' },
-      { key: 'discount', value: 'Chiết Khấu' },
-      { key: 'shippingFee', value: 'Phí Vận Chyển' },
-      { key: 'quantity', value: 'SL' },
-      { key: 'intoMney', value: 'Thành Tiền' },
-      { key: 'pay', value: 'Thanh Toán' },
-      { key: 'createdAt', value: 'Ngày' },
-      { key: 'updatedAt', value: 'Ngày' },
-      { key: 'customerName', value: 'Khách Hàng' },
-      { key: 'price', value: 'Gía Bán' },
-      { key: 'tare', value: 'TCTB' ,tooltip:'Tạp Chất hoặc trừ Bì'},
-      { key: 'importPrice', value: 'Gía Nhập' },
-      { key: 'unit', value: 'Đơn Vị' },
-      { key: 'no', value: '#' },
-      { key: 'address', value: 'Địa Chỉ' },
-      { key: 'phone', value: 'Phone' },
-      { key: 'email', value: 'Email' },
-      { key: 'note', value: 'Ghi Chú' },
-      { key: 'money', value: 'Tiền' },
-      { key: groupItem.ISumQuantity, value: 'Số Lượng' },
-      { key: groupItem.ISumSales, value: 'Tổng Doanh Thu' },
-      { key: groupItem.IsumImport, value: 'Tổng Nhập' },
-      { key: groupItem.ISumExpense, value: 'Tổng Chi' },
-      { key: groupItem.sumSale, value: 'Doanh Thu' },
-      { key: groupItem.sumImport, value: 'Tiền Nhập' },
-      { key: 'kh_ncc', value: 'Khách Hàng-NCC' },
-      { key: 'loanDate', value: 'Ngày Tạo' },
-      { key: 'payDate', value: 'Ngày T.Toán' },
-      { key: 'sumOuput', value: 'Tổng Xuất' },
-      { key: 'inventory', value: 'Tồn Kho' },
-      { key: 'valueImport', value: 'Tiền Nhập' },
-      { key: 'valueOut', value: 'Doanh Thu' },
-      { key: 'profit', value: 'Lợi Nhuận' },
-      { key: 'weight1', value: 'Cân Lần 1' },
-      { key: 'weight2', value: 'Cân Lần 2' },
-      { key: 'cargoVolume', value: 'KL Hàng' },
-      { key: 'impurities', value: 'Tạp Chất(%)' },
-      { key: 'carNumber', value: 'Số Xe' },
-      { key: 'type', value: 'Loại Hàng' },
-      { key: 'ieGoods', value: 'Xuất/Nhập Hàng' },
-      { key: 'productName', value: 'Tên Hàng' },
-      { key: 'customertName', value: 'Khách Hàng' },
-      { key: 'id', value: 'ID' },
-    ];
-    let name =!isTooltip? columnsToDisplay.find((x: any) => x.key == key)?.value:columnsToDisplay.find((x: any) => x.key == key)?.tooltip;
+  columnOrders(key: any, isTooltip = false) {
+    const columnsToDisplay = adcolumnsToDisplay;
+    let name = !isTooltip
+      ? columnsToDisplay.find((x: any) => x.key == key)?.value
+      : columnsToDisplay.find((x: any) => x.key == key)?.tooltip;
     return name;
   }
   formatValue(value: any, column = '') {

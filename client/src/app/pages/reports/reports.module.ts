@@ -25,6 +25,11 @@ import { DonutProductComponent } from 'src/app/Components/donut-product/donut-pr
 import { ChartOrderComponent } from 'src/app/Charts/chart-order/chart-order.component';
 import { StackedColumnsComponent } from 'src/app/Charts/stacked-columns/stacked-columns.component';
 import { ChartjsComponent } from 'src/app/Charts/chartjs/chartjs.component';
+import { ExpansionTableComponent } from 'src/app/components/expansion-table/expansion-table.component';
+import { AdTableComponent } from 'src/app/components/ad-table/ad-table.component';
+import { FormatValuePipe } from 'src/app/pipes/format-value.pipe';
+import { ImportsModule } from 'src/app/imports';
+import { FilterComponent } from 'src/app/components/filter/filter.component';
 
 
 
@@ -35,31 +40,10 @@ import { ChartjsComponent } from 'src/app/Charts/chartjs/chartjs.component';
   ],
   imports: [
     CommonModule,
+    ImportsModule,
     ReportsRoutingModule,
-    MatTableModule,
-    MatTabsModule,
-    AutocompleteComponent,
-    NgFor,
-    MatButtonModule,
-    NgIf,
-    MatIconModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSortModule,
-    MatRippleModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatPaginatorModule,
-    FormsModule,
-    MatAutocompleteModule,
-    MatMenuModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    DonutProductComponent,StackedColumnsComponent,ChartOrderComponent,ChartjsComponent
+   AdTableComponent,
+   FilterComponent
     
   ],schemas:[NO_ERRORS_SCHEMA,CUSTOM_ELEMENTS_SCHEMA],
   providers:[]

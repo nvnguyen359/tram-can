@@ -35,8 +35,8 @@ export enum BaseApiUrl {
   KhachHang = 'khachhang',
   CongTy = 'congty',
   User = 'user',
-  BaoCao = 'baocao',Printers='printers'
-
+  BaoCao = 'baocao',
+  Printers = 'printers',
 }
 export enum fieldData {
   importPrice = 'importPrice',
@@ -51,8 +51,8 @@ export function links() {
       icon: 'home',
     },
     {
-      text: 'Trạm Cân',
-      link: `/${BaseApiUrl.TramCan}`,
+      text: 'Báo Cáo',
+      link: `/${BaseApiUrl.BaoCao}`,
       icon: 'shopping_basket',
     },
     {
@@ -72,7 +72,59 @@ export function links() {
     },
   ];
 }
-const pageSizeOptions: any[] = [9, 10, 25, 100, 1000, 5000];
+const pageSizeOptions: any[] = [5, 9, 10, 25, 100, 1000, 5000];
+const radioGroup = ['Xuất Hàng', 'Nhập Hàng', 'Dich Vụ'];
+const adcolumnsToDisplay = [
+  { key: 'no', value: '#' },
+  { key: 'name', value: 'Tên' },
+  { key: 'status', value: 'Trạng Thái' },
+  { key: 'wage', value: 'Tiền Công' },
+  { key: 'discount', value: 'Chiết Khấu' },
+  { key: 'shippingFee', value: 'Phí Vận Chyển' },
+  { key: 'quantity', value: 'SL' },
+  { key: 'intoMney', value: 'Thành Tiền' },
+  { key: 'pay', value: 'Thanh Tiền' },
+  {key:'payment',value:'Thanh Toán'},
+  {'key':'numberOfContainers',value:'Số Hiệu Cont.'},
+  { key: 'createdAt', value: 'Ngày' },
+  { key: 'updatedAt', value: 'Ngày' },
+  { key: 'customerName', value: 'Khách Hàng' },
+  { key: 'price', value: 'Gía Bán' },
+  { key: 'tare', value: 'TCTB', tooltip: 'Tạp Chất hoặc trừ Bì' },
+  { key: 'importPrice', value: 'Gía Nhập' },
+  { key: 'unit', value: 'Đơn Vị' },
+  { key: 'no', value: '#' },
+  { key: 'address', value: 'Địa Chỉ' },
+  { key: 'phone', value: 'Phone' },
+  { key: 'email', value: 'Email' },
+  { key: 'note', value: 'Ghi Chú' },
+  { key: 'money', value: 'Tiền' },
+  { key: groupItem.ISumQuantity, value: 'Số Lượng' },
+  { key: groupItem.ISumSales, value: 'Tổng Doanh Thu' },
+  { key: groupItem.IsumImport, value: 'Tổng Nhập' },
+  { key: groupItem.ISumExpense, value: 'Tổng Chi' },
+  { key: groupItem.sumSale, value: 'Doanh Thu' },
+  { key: groupItem.sumImport, value: 'Tiền Nhập' },
+  { key: 'kh_ncc', value: 'Khách Hàng-NCC' },
+  { key: 'loanDate', value: 'Ngày Tạo' },
+  { key: 'payDate', value: 'Ngày T.Toán' },
+  { key: 'sumOuput', value: 'Tổng Xuất' },
+  { key: 'inventory', value: 'Tồn Kho' },
+  { key: 'valueImport', value: 'Tiền Nhập' },
+  { key: 'valueOut', value: 'Doanh Thu' },
+  { key: 'profit', value: 'Lợi Nhuận' },
+  { key: 'weight1', value: 'Cân Lần 1' },
+  { key: 'weight2', value: 'Cân Lần 2' },
+  { key: 'cargoVolume', value: 'KL Hàng' },
+  { key: 'impurities', value: 'Tạp Chất(%)' },
+  { key: 'carNumber', value: 'Số Xe' },
+  { key: 'type', value: 'Loại Hàng' },
+  { key: 'ieGoods', value: 'Xuất/Nhập' },
+  { key: 'productName', value: 'Tên Hàng' },
+  { key: 'customertName', value: 'Khách Hàng' },
+  { key: 'id', value: 'ID' },
+  { key: 'actualVolume', value: 'KL Thực', tooltip: 'Khối lượng hàng thực tế' },
+];
 export function fields() {
   const data = [
     {
@@ -404,4 +456,4 @@ export function DocTienBangChu(SoTien: any) {
   KetQua = KetQua.substring(1, 2).toUpperCase() + KetQua.substring(2);
   return KetQua; //.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
 }
-export { pageSizeOptions };
+export { pageSizeOptions, radioGroup, adcolumnsToDisplay };

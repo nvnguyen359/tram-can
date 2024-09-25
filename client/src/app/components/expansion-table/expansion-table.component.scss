@@ -1,11 +1,15 @@
 .example-container {
-  height: 620px;
+  height: auto;
   overflow: auto;
 }
-
-thead tr th {
-  width: 50px;
+.text-right {
+  text-align: right!important;
 }
+.text-right  > .mat-sort-header-container{
+  text-align: right!important;
+  justify-content: flex-end;
+}
+
 
 mat-mini-fab {
   opacity: 0.5;
@@ -86,7 +90,7 @@ tr:nth-child(even) {
 
 .table-details thead td {
   text-align: left;
-  background-color: #303030;
+  background-color: #df7c7c;
   color: white;
 }
 
@@ -136,7 +140,8 @@ tr:nth-child(even) {
   font-weight: 500;
 }
 .mat-mdc-row{
-  height: 30px;
+  height: 10px;
+ 
 }
 .mat-mdc-row:hover{
   background: rgba(57, 100, 243, 0.63);

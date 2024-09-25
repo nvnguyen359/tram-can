@@ -74,10 +74,13 @@ body {
 .text-left {
     text-align: left;
 }
-app-home,app-expansion-table{
+
+app-home,
+app-expansion-table {
     width: 100%;
     height: 100%;
 }
+
 a {
     color: var(--mdc-filled-text-field-caret-color);
     text-transform: capitalize;
@@ -131,9 +134,10 @@ a {
     position: fixed;
     z-index: 1000000;
     bottom: 5px;
-    left: 220px;
+    left: 308px;
     opacity: 0.75;
     display: flex;
+    color: rgb(234, 75, 255);
 }
 
 @keyframes rotating {
@@ -231,7 +235,19 @@ mat-form-field mat-icon-button {
 }
 
 .text-right {
-    text-align: right;
+    text-align: right !important;
+    padding-right: 4px;
+}
+
+.text-right>.mat-sort-header-container {
+    text-align: right !important;
+    justify-content: flex-end;
+    margin-right: -18px;
+    padding-right: 4px;
+}
+
+.text-left {
+    padding-left: 4px;
 }
 
 button {
@@ -278,11 +294,6 @@ button {
     box-shadow: var(--mdc-elevated-card-container-elevation);
 }
 
-// mat-form-field.small {
-//     --mat-form-field-container-height: 40px;
-//     --mat-form-field-container-vertical-padding: 8px;
-//     font-size:medium;
-//   }
-//   ::ng-deep .mat-mdc-form-field-flex {
-//     margin-top: -7px !important;
-// }
+.example-sidenav-content.margin-top64>ad-reports {
+    width: 100%;
+}

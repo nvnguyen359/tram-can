@@ -13,10 +13,10 @@ const routes: Routes = [
       ),
   },
   {
-    path: BaseApiUrl.TramCan,
+    path: BaseApiUrl.BaoCao,
     loadChildren: () =>
-      import('./pages/weigh-station/weigh-station.module').then(
-        (m) => m.WeighStationModule
+      import('./pages/reports/reports.module').then(
+        (m) => m.ReportsModule
       ),
   },
   {

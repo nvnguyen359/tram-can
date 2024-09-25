@@ -31,6 +31,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ExpansionTableComponent } from './components/expansion-table/expansion-table.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { DisplayHtmlComponent } from './components/display-html/display-html.component';
+import { RouterModule } from '@angular/router';
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   imports: [MatRadioModule,MatProgressBarModule,
     MatExpansionModule,
@@ -73,7 +75,7 @@ import { DisplayHtmlComponent } from './components/display-html/display-html.com
     MatChipsModule,
     MatInputModule,
     MatTooltipModule,
-    InputCustomComponent,AutocompleteComponent,ExpansionTableComponent,DisplayHtmlComponent,NgOptimizedImage,
+    InputCustomComponent,AutocompleteComponent,ExpansionTableComponent,DisplayHtmlComponent,NgOptimizedImage,RouterModule,MatMenuModule
   ],
   exports: [MatRadioModule,MatProgressBarModule,NgOptimizedImage,
     MatExpansionModule,
@@ -116,7 +118,7 @@ import { DisplayHtmlComponent } from './components/display-html/display-html.com
     MatChipsModule,
     MatInputModule,
     MatTooltipModule,
-    InputCustomComponent,AutocompleteComponent,ExpansionTableComponent,DisplayHtmlComponent
+    InputCustomComponent,AutocompleteComponent,ExpansionTableComponent,DisplayHtmlComponent,RouterModule,MatMenuModule
   ],
   providers:[]
 })

@@ -100,6 +100,7 @@ export class ApiService {
     });
   }
   async get(url: string, params?: any, name = ''): Promise<any> {
+ //  console.log(params)
     let pas = '';
     if (params) {
       const entries = Object.entries(params);
@@ -111,7 +112,7 @@ export class ApiService {
         }
       });
     }
-    console.log(pas);
+    // console.log(pas);
     const pathUrl = `${this.baseServer}/${url}?${pas}`;
     return new Promise((res, rej) => {
       this.http

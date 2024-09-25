@@ -2,6 +2,7 @@ const path = require("path");
 require("dotenv").config();
 const lib = require("./../shares/lib");
 const { initTable } = require("./createTable");
+const { count } = require("console");
 class CRUDKNEX {
   knex;
   constructor(table = null) {
@@ -87,7 +88,10 @@ class CRUDKNEX {
       res(result);
     });
   }
+  async countCondition(obj = {}) {}
   async findAll(obj = {}) {
+    let sqlClone;
+    // console.log(obj)
     const {
       limit = 100,
       offset = 0,
@@ -97,28 +101,9 @@ class CRUDKNEX {
       column,
       search,
     } = obj;
-    let whe = "";
+
     const dateAt = "createdAt";
     const orderBy = "id";
-    // if (search && Object.keys(search)) {
-    //   const entries = Object.entries(search);
-    //   for (let i = 0; i < entries.length; i++) {
-    //     const x = entries[i];
-    //     whe += `${x[0]} LIKE ${x[1]}%`;
-    //     if ( i==0&& i < entries.length) {
-    //       whe += " OR ";
-    //     }
-    //   }
-    //   if(startDay){
-    //     const from = new Date(startDay).startDay().toISOString();
-    //     whe+=` AND ${dateAt}>=${from}`
-    //   }
-    //   if(endDay){
-    //     const from = new Date(endDay).endDay().toISOString();
-    //     whe+=` AND ${dateAt}<=${from}`
-    //   }
-    // }
-
     let result;
 
     if (query) {
@@ -127,6 +112,7 @@ class CRUDKNEX {
       }
       result = await knex.raw(query);
     } else {
+
       result = this.knex(this.table).select();
       if (column) {
         result = result.column(column);
@@ -151,22 +137,16 @@ class CRUDKNEX {
         const to = new Date(endDay).endDay().toISOString();
         result = result.where(dateAt, "<=", to);
       }
-      // console.log((await result).length);
-      result = result
-        
-        .limit(limit)
-        .offset(offset)
-        .orderBy(orderBy, "desc");
-      console.log(result.toString());
+      sqlClone = result.clone();
+      result = result.limit(limit).offset(offset).orderBy(orderBy, "desc");
+      console.log('count:'.green,(await sqlClone.count('id as CNT'))[0]['CNT'] ,'query:'.red,result.toString().cyan);
     }
 
     return new Promise(async (res, rej) => {
       //console.log(wherename)
-      this.knex(this.table)
-        .count("id as CNT")
-        .then(async (total) => {
-          res({ items: await result, count: total[0].CNT });
-        });
+      sqlClone.count("id as CNT").then(async (total) => {
+        res({ items: await result, count: total[0].CNT });
+      });
     });
   }
   async findId(id) {

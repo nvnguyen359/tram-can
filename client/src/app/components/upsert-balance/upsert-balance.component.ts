@@ -13,12 +13,14 @@ import { DisplayHtmlComponent } from '../display-html/display-html.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { environment } from 'src/app/environment';
-
+import { ReportTodayComponent } from '../report-today/report-today.component';
+import {radioGroup}  from '../../general'
+import { AdTableComponent } from '../ad-table/ad-table.component';
 declare var createElements: any;
 @Component({
   selector: 'app-upsert-balance',
   standalone: true,
-  imports: [ImportsModule, DisplayNumberComponent, AdAutocompleteComponent],
+  imports: [ImportsModule, DisplayNumberComponent, AdAutocompleteComponent,ReportTodayComponent,AdTableComponent],
   templateUrl: './upsert-balance.component.html',
   styleUrl: './upsert-balance.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -49,21 +51,20 @@ export class UpsertBalanceComponent {
   optionsTable: any = {
     url: 'weighStation',
     displayedColumns: [
-      'no',
+      'carNumber',
       'customerName',
       'productName',
-      'carNumber',
       'weight1',
       'weight2',
       'cargoVolume',
       'tare',
       'price',
       'numberOfContainers',
-      'ieGoods',
+   
     ],
-    pageSize: 100,
     isShowBt: false,
-    data: null,
+ 
+   
   };
   keyTare = 'tare';
   weight = 0;
@@ -101,7 +102,8 @@ export class UpsertBalanceComponent {
     value: 0,
     tare: '',
   };
-  radioGroup = ['Xuất Hàng', 'Nhập Hàng', 'Dich Vụ'];
+  radioGroups = radioGroup;
+  
   selectedRadio = '';
   form: any;
   pathApi = BaseApiUrl.TramCan;
@@ -115,6 +117,13 @@ export class UpsertBalanceComponent {
   indexDisplay = 0;
   valuesClickRow: any;
   condistionTable: any;
+  // options: any = {
+  //   url: '',
+  //   displayedColumns: [],
+  //   pageSize: 15,
+  //   isShowBt: false,
+  //   displayedColumnGroup:['createdAt','weight1','weight2','cargoVolume','actualVolume','pay','payment']
+  // };
   @HostListener('window:keydown.control.p', ['$event'])
   bigFont(event: KeyboardEvent) {
     event.preventDefault();
