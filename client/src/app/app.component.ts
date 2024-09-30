@@ -1,24 +1,24 @@
-import { Component, Inject } from "@angular/core";
-import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
-import "./lib.extensions";
-import { NavigationStart, Router, RouterEvent } from "@angular/router";
-import { BaseApiUrl, Status, links } from "./general";
-import { HttpClient } from "@angular/common/http";
-import { DataService } from "./services/data.service";
-import { ApiService } from "./services/api.service";
-import { IpcService } from "./services/ipc.service";
+import { Component, Inject } from '@angular/core';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import './lib.extensions';
+import { NavigationStart, Router, RouterEvent } from '@angular/router';
+import { BaseApiUrl, Status, links } from './general';
+import { HttpClient } from '@angular/common/http';
+import { DataService } from './services/data.service';
+import { ApiService } from './services/api.service';
+import { IpcService } from './services/ipc.service';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = "client";
+  title = 'client';
   showFiller = false;
-  pageName?: string = "Trang Chủ";
-  url = "/";
-  search = "";
+  pageName?: string = 'Trang Chủ';
+  url = '/';
+  search = '';
   constructor(
     private _adapter: DateAdapter<any>,
     @Inject(MAT_DATE_LOCALE) private _locale: string,
@@ -26,12 +26,14 @@ export class AppComponent {
     private http: HttpClient,
     private dataService: DataService,
     private service: ApiService,
-    private  _ipc: IpcService
+    private _ipc: IpcService
   ) {
-
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {
         const url = event.url;
+        if (!url.includes(BaseApiUrl.BaoCao)) {
+          localStorage.setItem('load', '0');
+        }
         this.url = url;
         this.pageName = links().find((x: any) => x.link == url)?.text;
       }
@@ -49,7 +51,7 @@ export class AppComponent {
     this.vi();
   }
   vi() {
-    this._locale = "vi";
+    this._locale = 'vi';
     this._adapter.setLocale(this._locale);
   }
   onRefesh() {
@@ -57,30 +59,30 @@ export class AppComponent {
     location.reload();
   }
   onSearch() {
-    if (this.search != "") {
-      const item = document.getElementById("id-input-search");
+    if (this.search != '') {
+      const item = document.getElementById('id-input-search');
       if (item) {
-        item.style.width = "100%";
-        item.style.opacity = "1";
+        item.style.width = '100%';
+        item.style.opacity = '1';
         item.focus();
       }
     }
     this.dataService.sendMessage({ value: this.search, status: Status.Search });
   }
   onShowSearch() {
-    return this.search != "" ? "show" : "";
+    return this.search != '' ? 'show' : '';
   }
   onClose() {
-    this.search = "";
-    this.dataService.sendMessage({ value: "", status: Status.Search });
+    this.search = '';
+    this.dataService.sendMessage({ value: '', status: Status.Search });
   }
   onCloseWindow() {
-    this.service.eventWindow("close").then((e: any) => console.log(e));
+    this.service.eventWindow('close').then((e: any) => console.log(e));
   }
   onMinimize() {
-    this.service.eventWindow("min").then((e: any) => console.log(e));
+    this.service.eventWindow('min').then((e: any) => console.log(e));
   }
   onMaximize() {
-    this.service.eventWindow("max").then((e: any) => console.log(e));
+    this.service.eventWindow('max').then((e: any) => console.log(e));
   }
 }

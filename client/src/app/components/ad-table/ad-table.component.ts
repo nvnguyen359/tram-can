@@ -15,13 +15,24 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { delay, pageSizeOptions, Status } from 'src/app/general';
+import {
+  MatTable,
+  MatTableDataSource,
+  MatTableModule,
+} from '@angular/material/table';
+import {
+  delay,
+  getItem,
+  pageSizeOptions,
+  setItem,
+  Status,
+} from 'src/app/general';
 import { ApiService } from 'src/app/services/api.service';
 import { GroupITable } from './groupTable';
 import { FormatValuePipe } from 'src/app/pipes/format-value.pipe';
@@ -31,6 +42,7 @@ import { SumColumnsPipe } from 'src/app/pipes/sum-columns.pipe';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DataService } from 'src/app/services/data.service';
+
 @Component({
   selector: 'ad-table',
   animations: [
@@ -75,7 +87,8 @@ export class AdTableComponent {
   expandedElement: any | null | undefined;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort | undefined;
-  @ViewChild(MatTable, {static: false}) table!: MatTable<any>;
+  // @ViewChild(MatTable, { static: false }) table!: MatTable<any>;
+  @ViewChild('table', { read: ViewContainerRef }) table!: ViewContainerRef;
   private _liveAnnouncer: LiveAnnouncer | undefined;
   pageSizes = pageSizeOptions;
   //*==============
@@ -84,15 +97,18 @@ export class AdTableComponent {
   dataTotal: any;
   @Output() eventDelete = new EventEmitter();
   @Output() eventUpsert = new EventEmitter();
+  count = 0;
   constructor(
     private servive: ApiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private dataService: DataService
-  ) {}
+    private dataService: DataService,
+  ) {
+  }
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     // this.getData();
+
     this.getData();
     this.dataService.currentMessage.subscribe((e: any) => {
       if (e.status == Status.Add) {
@@ -139,9 +155,9 @@ export class AdTableComponent {
     if (this.option?.displayedColumnsChild) {
       const dt = new GroupITable(array, this.displayedColumns);
       //this.dataSource.data = new Array();
-     this.dataSource = new MatTableDataSource<any>(dt.customData);
-      //this.dataSource.data = dt.customData;
-      console.log('count: ',dt.customData?.length)
+      // this.dataSource = new MatTableDataSource<any>(dt.customData);
+      this.dataSource.data = dt.customData;
+      //console.log('count: ',dt.customData?.length)
       //this.dataSource.connect().next(dt.customData);
       if (this.displayedColumnsWithExpand.filter((x) => x !== 'expand'))
         this.displayedColumnsWithExpand.push('expand');
@@ -156,8 +172,8 @@ export class AdTableComponent {
     }
     await this.displayDetails();
     //this.table.renderRows()
+
     this.changeDetectorRefs.detectChanges();
-   
   }
   getData() {
     const condition = this.condition ? this.condition : this.option?.condition;

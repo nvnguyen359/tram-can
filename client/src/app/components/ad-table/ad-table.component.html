@@ -1,9 +1,9 @@
 <div class="flex data-null" *ngIf="!dataSource">
     Không có dữ liệu
 </div>
-<div class="table" *ngIf="dataSource">
+<div class="table" *ngIf="dataSource" >
     <div class="ad-container ">
-        <table mat-table [dataSource]="dataSource" matSort [multiTemplateDataRows]="true"
+        <table mat-table [dataSource]="dataSource" matSort [multiTemplateDataRows]="true" #table
             (matSortChange)="announceSortChange($event)">
             @for (column of displayedColumns; track column;) {
             <ng-container [matColumnDef]="column">
@@ -55,7 +55,11 @@
                 [class.ad-expanded-row]="expandedElement === element"
                 (click)="expandedElement = expandedElement === element ? null : element">
             </tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="ad-detail-row" ></tr>
+
+          <ng-container *ngIf="option.displayedColumnsChild; ">
+            <tr  mat-row *matRowDef="let row; columns: ['expandedDetail']" class="ad-detail-row" ></tr>
+          </ng-container>
+         
             <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true" ></tr>
         </table>
 

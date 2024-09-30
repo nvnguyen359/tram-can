@@ -13,6 +13,8 @@ import {
   typeChart,
   radioGroup,
   Status,
+  getItem,
+  setItem,
 } from 'src/app/general';
 import { ApiService } from 'src/app/services/api.service';
 import { DataService } from 'src/app/services/data.service';
@@ -71,21 +73,30 @@ export class ReportsComponent {
   groupIEGoods = radioGroup;
   condition: any = { search: { ieGoods: 'Xuất Hàng' } };
   activeLink = '';
+  click=0;
   constructor(private service: ApiService, private dataService: DataService) {
     const date = firstLastDate();
     this.firstDay = date.firstDate;
     this.lastDay = date.lastDate;
     this.title = `Ngày ${new Date().toLocaleDateString('vi')}`;
+    this.click = getItem('load') ? parseInt(getItem('load')) : 0;
+    this.click++;
+    setItem('load', this.click);
+    if (this.click == 1) {
+      location.reload();
+    }
   }
   async ngOnInit() {
     //console.log(radioGroup);
   }
 
   onClickTab(ieGoods: any) {
+
     //this.condition = {search:{ ieGoods }};
     //console.log(ieGoods,this.condition)
     const obj = { status: Status.Add, ieGoods };
     this.dataService.sendMessage(obj);
+
   }
   eventUpsertTable(event: any) {}
   //#region all

@@ -15,9 +15,9 @@ export class GroupITable {
   get Data() {
     return this._data;
   }
-  get customData() {
+  get customData():any[] {
     const arr = Array.from(this._data);
-    if (arr.length < 1) return;
+
     const dates = [
       ...new Set(
         arr.map((x: any) => new Date(x.createdAt).toLocaleDateString('vi'))
